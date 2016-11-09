@@ -6,7 +6,7 @@ import { ContactsService } from '../contacts.service';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css']
+  styleUrls: ['contact.component.scss']
 })
 export class ContactComponent implements OnInit {
 
