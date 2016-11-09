@@ -1,0 +1,14 @@
+<h3>
+  Contacts
+</h3>
+
+<ul>
+  <li *ngFor="let contact of contacts">
+    <span *ngIf="contact.uiState.isBeingCreated">NEW (creation pending)</span>
+    <span *ngIf="contact.uiState.isBeingRemoved">DELETED (deletion pending)</span> 
+    <a routerLink="/home/contact/{{contact.id}}">{{contact.firstName}} {{contact.lastName}}</a> 
+    <button (click)="removeContact(contact)">remove</button>
+  </li>
+</ul>
+
+<button (click)="addContact()">new</button>

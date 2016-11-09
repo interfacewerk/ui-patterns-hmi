@@ -1,10 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ContactStore, UIContact } from './store/contacts';
+import { ContactsService } from './contacts.service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'app works!';
+export class AppComponent implements OnInit {
+  constructor(
+    private contactsService: ContactsService, 
+    private contactStore: ContactStore
+  ) {
+    
+  }
+
+  ngOnInit() {
+  }
+
 }
