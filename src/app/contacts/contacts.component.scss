@@ -1,5 +1,9 @@
-:host { /* refers here to app-contacts */
-  display: block;
-  background-color: red;
-  color: blue;
+:host {
+	li.creating {
+		background: #39CCCC;
+	}
+
+	li.deleting {
+		background: #FF4136;
+	}
 }
