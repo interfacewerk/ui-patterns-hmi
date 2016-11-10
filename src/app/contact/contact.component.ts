@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ContactStore, UIContact } from '../store/contacts';
 import { ContactsService, EditableContactData } from '../contacts.service';
+import { ExportService } from '../export.service';
 
 @Component({
   selector: 'app-contact',
@@ -14,7 +15,8 @@ export class ContactComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private contactStore: ContactStore,
-    private contactsService: ContactsService
+    private contactsService: ContactsService,
+    private exportService: ExportService
   ) { }
 
   ngOnInit() {
@@ -72,8 +74,9 @@ export class ContactComponent implements OnInit {
     );
   }
 
-  cancel() {
-
+  export($event: MouseEvent) {
+    $event.preventDefault();
+    this.exportService.addToExport(this.contact, <HTMLElement>$event.target);
   }
 
 }

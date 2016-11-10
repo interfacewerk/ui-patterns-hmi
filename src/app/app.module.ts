@@ -13,6 +13,8 @@ import { NewContactComponent } from './new-contact/new-contact.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { ContactFormComponent, ContactFormFooter, ContactFormHeader } from './contact-form/contact-form.component';
+import { ExportButtonComponent } from './export-button/export-button.component';
+import { ExportService } from './export.service';
 
 @Injectable()
 export class InitialResolve implements Resolve<void> {
@@ -47,7 +49,8 @@ export class InitialResolve implements Resolve<void> {
     HomeComponent,
     ContactFormComponent,
     ContactFormHeader,
-    ContactFormFooter
+    ContactFormFooter,
+    ExportButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +85,7 @@ export class InitialResolve implements Resolve<void> {
       }
     ])
   ],
-  providers: [ ContactStore, ContactsService, InitialResolve ],
+  providers: [ ContactStore, ContactsService, InitialResolve, ExportService ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

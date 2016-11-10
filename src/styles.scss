@@ -62,3 +62,36 @@ button.destructive {
 button.destructive:hover {
 	background: #FF6156;
 }
+
+.bird {
+	position: fixed;
+	z-index: 11;
+	transform: scale(1);
+	transition: left 1s ease-in, top 1s ease-out, transform 1s;
+
+	&.flying {
+		transform: scale(0.5);
+	}
+}
+
+.cloud {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(230, 230 ,230 ,0.7);
+	z-index: 9;
+}
+
+.airport {
+	position: fixed;
+	z-index: 10;
+}
+
+.export-bird {
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+	background-color: red;
+}
