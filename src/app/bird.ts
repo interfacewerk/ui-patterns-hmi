@@ -40,9 +40,6 @@ export class Bird {
         bird.remove();
         cloud.remove();
         airport.remove();
-        cloud = null;
-        bird = null;
-        airport = null;
         resolve();
       };
       bird.addEventListener('transitionend', onend);
