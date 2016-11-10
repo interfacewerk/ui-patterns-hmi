@@ -1,53 +1,134 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Contact } from '../contacts.service';
+import { Contact, EditableContactData } from '../contacts.service';
 
 @Injectable()
 export class ContactStore {
   public
   stateUpdate: Observable<void>;
 
+  setLocalModifications(id: number, data: EditableContactData) {
+    this.nextState(state => findContactByIdAndDo(id, contact => {
+      contact.uiState.localModifications = data;
+    }, state));
+  }
+
+  removeLocalModifications(id: number) {
+    this.nextState(state => findContactByIdAndDo(id, contact => {
+      contact.uiState.localModifications = null;
+    }, state));
+  }
+
+  startUpdateContactData(id: number, data: EditableContactData) {
+    this.nextState(state => findContactByIdAndDo(id, contact => {
+      contact.uiState.isUpdating = true;
+      contact.uiState.localModifications = data;
+    }, state));
+  }
+
+  finalizeUpdateContactData(id: number, data: EditableContactData) {
+    this.nextState(state => findContactByIdAndDo(id, contact => {
+      contact.uiState.isUpdating = false;
+      contact.uiState.localModifications = null;
+      contact.email = data.email;
+      contact.name = data.name;
+      contact.phone = data.phone;
+    }, state));
+  }
+
   setIsInitializing(v: boolean) {
     this.nextState(state => state.isInitializing = v);
   }
 
-  setContacts(contacts: UIContact[]) {
+  setContacts(contacts: Contact[]) {
     this.nextState(state => {
-      state.contacts = contacts;
-    });
-  }
-
-  addContact(contact: UIContact) {
-    this.nextState(state => {
-      state.contacts.push(JSON.parse(JSON.stringify(contact)));
-    });
-  }
-
-  updateContactData(id: number, data: UIContact) {
-    this.nextState(state => {
-      state.contacts.some(s => {
-        if (s.id === id) {
-          for(let p in data) {
-            s[p] = data[p];
+      state.contacts = contacts.map(c => {
+        let result: UIContact = {
+          id: c.id,
+          email: c.email,
+          isDeleted: c.isDeleted,
+          name: c.name,
+          phone: c.phone,
+          uiState: {
+            isBeingCreated: false,
+            isBeingRemoved: false,
+            isBeingUnremoved: false,
+            isUpdating: false
           }
-          return true;
-        }
+        };
+        return result;
       });
     });
   }
 
-  removeContact(id: number) {
-    this.nextState(state => {
-      for(let i = 0; i < state.contacts.length; i++) {
-        if (state.contacts[i].id === id) {
-          state.contacts.splice(i, 1);
-          return;
-        } 
-      }
-    });
+  startContactUndoDeletion(id: number) {
+    this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
+      c.uiState.isBeingUnremoved = true;
+      c.isDeleted = false;
+    }, state));
   }
-  
+
+  finalizeContactUndoDeletion(id: number) {
+    this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
+      c.uiState.isBeingUnremoved = false;
+    }, state));
+  }
+
+  startContactDeletion(id: number) {
+    this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
+      c.uiState.isBeingRemoved = true;
+    }, state));
+  }
+
+  finalizeContactDeletion(id: number) {
+    this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
+      c.isDeleted = true;
+      c.uiState.isBeingRemoved = false;      
+    }, state));
+  }
+
+  startContactCreation(contact: EditableContactData): number {
+    let tmpId = - Math.floor(Math.random() * 10000000);
+    this.nextState(state => {
+      let uiContact: UIContact = {
+        id: tmpId,
+        email: contact.email,
+        name: contact.name,
+        phone: contact.phone,
+        isDeleted: false,
+        uiState: {
+          isBeingCreated: true,
+          isBeingRemoved: false,
+          isUpdating: false,
+          isBeingUnremoved: false
+        }
+      };
+      state.contacts.push(JSON.parse(JSON.stringify(uiContact)));
+    });
+    return tmpId;
+  }
+
+  finalizeContactCreation(tmpId: number, contact: Contact) {
+    this.nextState(state => 
+      findContactByIdAndDo(tmpId, (c, idx) => {
+        state.contacts[idx] = {
+          id: contact.id,
+          email: contact.email,
+          name: contact.name,
+          phone: contact.phone,
+          isDeleted: contact.isDeleted,
+          uiState: {
+            isBeingCreated: false,
+            isBeingRemoved: false,
+            isUpdating: false,
+            isBeingUnremoved: false
+          }
+        }
+      }, state)
+    );
+  }
+
   getState(): AppState {
     return JSON.parse(JSON.stringify(this.state));
   }
@@ -76,6 +157,7 @@ export class ContactStore {
 
     this._stateUpdate.next(null);
   }
+
 }
 
 export type AppState = {
@@ -83,12 +165,20 @@ export type AppState = {
   contacts: Array<UIContact>
 }
 
-export type UIContact = {
-  id: number
-  firstName: string
-  lastName: string,
+export type UIContact = Contact & {
   uiState: {
     isBeingCreated: boolean
     isBeingRemoved: boolean
+    isUpdating: boolean
+    isBeingUnremoved: boolean
+    localModifications?: EditableContactData
   }
+}
+
+function findContactByIdAndDo(id: number, cb:(c: UIContact, idx: number) => any,  state: AppState) {
+  state.contacts.some((c, idx) => {
+    if (c.id !== id) return false;
+    cb(c, idx);
+    return true;
+  });
 }

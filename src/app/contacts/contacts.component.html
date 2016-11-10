@@ -1,13 +1,13 @@
 <h1>Contacts</h1>
 
-<ul>
+<span *ngIf="noContact">Empty list</span>
+
+<ul *ngIf="!noContact">
   <li
     *ngFor="let contact of contacts"
-    [ngClass]="{creating: contact.uiState.isBeingCreated, deleting: contact.uiState.isBeingRemoved}">
-    <a routerLink="/home/contact/{{contact.id}}">{{contact.firstName}} {{contact.lastName}}</a>
-    <button class="destructive" *ngIf="!contact.uiState.isBeingRemoved && !contact.uiState.isBeingCreated" (click)="removeContact(contact)">&times;</button>
-    <button class="creative" *ngIf="contact.uiState.isBeingRemoved">undo</button>
+    [ngClass]="{creating: contact.uiState.isBeingCreated || contact.uiState.isBeingUnremoved, deleting: contact.uiState.isBeingRemoved}">
+    <a routerLink="/home/contact/{{contact.id}}">{{contact.name}}</a>
   </li>
 </ul>
 
-<button class="creative" (click)="addContact()">new</button>
+<button class="creative" routerLink="/home/new">new</button>

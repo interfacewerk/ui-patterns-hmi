@@ -1,0 +1,11 @@
+<form>
+  <ng-content select="app-contact-form-header"></ng-content>
+  
+  <input class="h1" type="text" [(ngModel)]="model.name" name="name" placeholder="a name here" required autofocus (ngModelChange)="$onChange()"/>
+
+  <input type="email" [(ngModel)]="model.email" name="email" placeholder="@" (ngModelChange)="$onChange()"/>
+
+  <input type="text" [(ngModel)]="model.phone" name="phone" placeholder="phone" (ngModelChange)="$onChange()"/>
+
+  <ng-content select="app-contact-form-footer"></ng-content>
+</form>

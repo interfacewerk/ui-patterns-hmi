@@ -12,6 +12,7 @@ import { NoContactSelectedComponent } from './no-contact-selected/no-contact-sel
 import { NewContactComponent } from './new-contact/new-contact.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
+import { ContactFormComponent, ContactFormFooter, ContactFormHeader } from './contact-form/contact-form.component';
 
 @Injectable()
 export class InitialResolve implements Resolve<void> {
@@ -22,17 +23,7 @@ export class InitialResolve implements Resolve<void> {
     let pr = new Promise<void>((resolve, reject) => {
       this.contactsService.list().subscribe(
         (contacts) => {
-          this.contactStore.setContacts(contacts.map(c => {
-            return {
-              id: c.id,
-              firstName: c.firstName,
-              lastName: c.lastName,
-              uiState: {
-                isBeingCreated: false,
-                isBeingRemoved: false
-              }
-            };
-          }));
+          this.contactStore.setContacts(contacts);
           this.contactStore.setIsInitializing(false);
           resolve();     
         }, 
@@ -53,7 +44,10 @@ export class InitialResolve implements Resolve<void> {
     NoContactSelectedComponent,
     NewContactComponent,
     ContactComponent,
-    HomeComponent
+    HomeComponent,
+    ContactFormComponent,
+    ContactFormHeader,
+    ContactFormFooter
   ],
   imports: [
     BrowserModule,

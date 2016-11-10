@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactStore, UIContact } from '../store/contacts';
 import { ContactsService } from '../contacts.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-contacts',
@@ -9,9 +10,13 @@ import { ContactsService } from '../contacts.service';
 })
 export class ContactsComponent implements OnInit {
 
+  noContact: boolean;
+  contacts: UIContact[];
+
   constructor(
     private contactsService: ContactsService, 
-    private contactStore: ContactStore
+    private contactStore: ContactStore,
+    private activatedRoute: ActivatedRoute
   ) {
     
   }
@@ -19,54 +24,8 @@ export class ContactsComponent implements OnInit {
   ngOnInit() {
     this.contactStore.stateUpdate.subscribe(() => {
       let currentState = this.contactStore.getState();
-      this.contacts = currentState.contacts;
+      this.contacts = currentState.contacts.filter(c => !c.isDeleted);
+      this.noContact = this.contacts.length === 0;
     });
-  }
-
-  contacts: UIContact[];
-
-  addContact() {
-    let tmpId = Math.floor(1000000*Math.random());
-    this.contactStore.addContact({
-      id: tmpId,
-      firstName: 'ksdjfh',
-      lastName: 'kkjh',
-      uiState: {
-        isBeingCreated: true,
-        isBeingRemoved: false
-      }
-    });
-
-    this.contactsService.create({
-      firstName: 'ksdjfh',
-      lastName: 'kkjh'
-    })
-    .subscribe(
-      contact => this.contactStore.updateContactData(tmpId, {
-        id: contact.id,
-        firstName: contact.firstName,
-        lastName: contact.lastName,
-        uiState: {
-          isBeingCreated: false,
-          isBeingRemoved: false
-        }
-      }),
-      () => alert('ERROR')
-     );
-  }
-
-  removeContact(contact: UIContact) {
-    contact.uiState.isBeingRemoved = true;
-    this.contactStore.updateContactData(contact.id, contact);
-    this.contactsService.remove(contact.id)
-    .subscribe(
-      () => this.contactStore.removeContact(contact.id),
-      () => alert('ERROR')
-    );
-    
-  }
-
-  nextId() {
-    return this.contacts.map(c => c.id).reduce((p, c) => Math.max(p, c), 0) + 1;
   }
 }

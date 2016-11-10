@@ -25,20 +25,37 @@ export class ContactsService {
     return delayedResponse<Contact>(this.contacts.filter(c => c.id === id)[0], 2000);
   }
 
-  create(data: {
-    firstName?: string,
-    lastName?: string,
-    email?: string
-  }): Observable<Contact> {
+  create(data: EditableContactData): Observable<Contact> {
     let contact: Contact = {
       id: this.contacts.reduce((p, c) => Math.max(p, c.id), 0) + 1,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      isDeleted: false
     };
     this.contacts.push(contact);
     this.saveContactsInLocalStorage();
     return delayedResponse<Contact>(contact, 2000);
+  }
+
+  update(id: number, data: EditableContactData): Observable<Contact> {
+    let found: Contact;
+    
+    this.contacts.some(c => {
+      if (c.id !== id) return false;
+      c.email = data.email;
+      c.name = data.name;
+      c.phone = data.phone;
+      found = c;
+      return true;
+    });
+    
+    if (found) {
+      this.saveContactsInLocalStorage();      
+      return delayedResponse<Contact>(found, 2000);
+    } else {
+      return delayedResponse<Contact>(null, 2000);
+    }
   }
 
   remove(id: number): Observable<string> {
@@ -46,7 +63,17 @@ export class ContactsService {
     if (idx === -1) {
       return delayedResponse('No such contact', 2000);
     }
-    this.contacts.splice(idx, 1);
+    this.contacts[idx].isDeleted = true;
+    this.saveContactsInLocalStorage();
+    return delayedResponse(null, 2000);
+  }
+
+  undoRemove(id: number): Observable<string> {
+    let idx = this.contacts.map(c => c.id).indexOf(id);
+    if (idx === -1) {
+      return delayedResponse('No such contact', 2000);
+    }
+    this.contacts[idx].isDeleted = false;
     this.saveContactsInLocalStorage();
     return delayedResponse(null, 2000);
   }
@@ -69,7 +96,14 @@ function delayedResponse<T>(value: T, delay: number): Observable<T> {
 
 export type Contact = {
   id: number,
-  firstName: string,
-  lastName: string,
-  email: string
+  name: string,
+  email: string,
+  phone: string,
+  isDeleted: boolean
+}
+
+export type EditableContactData = {
+  name?: string,
+  email?: string,
+  phone?: string
 }

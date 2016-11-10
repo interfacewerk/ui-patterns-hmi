@@ -1,3 +1,5 @@
-<p>
-  new-contact works!
-</p>
+<app-contact-form [model]="newContact">
+  <app-contact-form-footer>
+    <button type="submit" (click)="create()">Create</button>  
+  </app-contact-form-footer>
+</app-contact-form>
