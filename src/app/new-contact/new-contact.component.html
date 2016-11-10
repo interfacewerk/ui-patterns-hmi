@@ -1,5 +1,5 @@
-<app-contact-form [model]="newContact">
+<app-contact-form [model]="newContact" (onValid)="isFormValid = $event" (onSubmit)="create()">
   <app-contact-form-footer>
-    <button type="submit" (click)="create()">Create</button>  
+    <button type="submit" [disabled]="!isFormValid">Create</button>  
   </app-contact-form-footer>
 </app-contact-form>

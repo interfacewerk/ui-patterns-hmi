@@ -1,14 +1,15 @@
-<app-contact-form [model]="model" (onChange)="onModelChange()">
+<app-contact-form [model]="model" (onChange)="onModelChange()" (onValid)="isFormValid = $event" (onSubmit)="save()">
   <app-contact-form-footer>
-    <button *ngIf="contact.uiState.localModifications" (click)="revert()">Cancel (revert modifications)</button>
-    <button (click)="save()">Save</button>
-    <span *ngIf="contact.isDeleted">
-      You deleted this contact
-      <button class="creative" (click)="undoDelete()">undo delete</button>
-    </span>
-    <button class="destructive" (click)="delete()" *ngIf="!contact.isDeleted">Delete</button>
+    <button type="button" *ngIf="contact.uiState.localModifications" (click)="revert()">Cancel (revert modifications)</button>
     
+    <button type="submit" [disabled]="!isFormValid">Save</button>
   </app-contact-form-footer>
 </app-contact-form>
 
 <span *ngIf="contact.uiState.isUpdating">UPDATING</span>
+
+<span *ngIf="contact.isDeleted">
+  You deleted this contact
+  <button class="creative" (click)="undoDelete()">undo delete</button>
+</span>
+<button type="button" class="destructive" (click)="delete()" *ngIf="!contact.isDeleted">Delete</button>

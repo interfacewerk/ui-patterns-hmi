@@ -33,6 +33,7 @@ export class ContactComponent implements OnInit {
 
   contact: UIContact;
   model: EditableContactData;
+  isFormValid: boolean;
   
   onModelChange() {
     this.contactStore.setLocalModifications(this.contact.id, this.model);

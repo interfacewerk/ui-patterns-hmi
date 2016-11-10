@@ -14,6 +14,7 @@ export class NewContactComponent implements OnInit {
     name: '',
     phone: ''
   };
+  isFormValid: boolean;
 
   constructor(
     private contactStore: ContactStore,

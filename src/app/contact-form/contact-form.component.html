@@ -1,8 +1,25 @@
-<form>
+<form #contactForm="ngForm" novalidate (ngSubmit)="$onSubmit()">
   <ng-content select="app-contact-form-header"></ng-content>
   
-  <input class="h1" type="text" [(ngModel)]="model.name" name="name" placeholder="a name here" required autofocus (ngModelChange)="$onChange()"/>
+  <input type="text"
+    autocomplete="off"
+    id="name" 
+    class="h1"
+    [(ngModel)]="model.name" 
+    name="name" 
+    placeholder="a name here" 
+    required 
+    autofocus 
+    (ngModelChange)="$onChange()"
+    #name="ngModel" />
+  <br>
+  <div *ngIf="name.errors && (name.dirty || name.touched)">
+    <div [hidden]="!name.errors.required">
+      Name is required
+    </div>
+  </div>
 
+  <br>
   <input type="email" [(ngModel)]="model.email" name="email" placeholder="@" (ngModelChange)="$onChange()"/>
 
   <input type="text" [(ngModel)]="model.phone" name="phone" placeholder="phone" (ngModelChange)="$onChange()"/>
