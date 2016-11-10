@@ -1,1 +1,3 @@
-Export <span *ngIf="nExports > 0" class="number-badge">{{nExports}}</span>
+<button [disabled]="nExports === 0">
+  Export<span *ngIf="nExports > 0" class="number-badge"> {{nExports}}</span>
+</button>

@@ -1,4 +1,6 @@
 :host {
+  display: inline-block;
+  
   &.ready-to-receive {
     background-color: lightsalmon;
   }
