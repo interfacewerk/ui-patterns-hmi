@@ -7,6 +7,9 @@
     *ngFor="let contact of contacts"
     [ngClass]="{creating: contact.uiState.isBeingCreated || contact.uiState.isBeingUnremoved, deleting: contact.uiState.isBeingRemoved}">
     <a routerLink="/home/contact/{{contact.id}}">{{contact.name}}</a>
+    <span *ngIf="contact.uiState.isBeingCreated">Creating …</span>
+    <span *ngIf="contact.uiState.isBeingUnremoved">Restoring …</span>
+    <span *ngIf="contact.uiState.isBeingRemoved">Deleting …</span>
   </li>
 </ul>
 
