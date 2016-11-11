@@ -1,28 +1,41 @@
 <form #contactForm="ngForm" novalidate (ngSubmit)="$onSubmit()">
   <ng-content select="app-contact-form-header"></ng-content>
-  
-  <input type="text"
-    autocomplete="off"
-    id="name" 
-    class="h1"
-    [(ngModel)]="model.name" 
-    name="name" 
-    placeholder="a name here" 
-    required 
-    autofocus 
-    (ngModelChange)="$onChange()"
-    #name="ngModel" />
-  <br>
-  <div *ngIf="name.errors && (name.dirty || name.touched)">
+
+  <div *ngIf="name.errors && (name.dirty || name.touched)" class="error_notice">
     <div [hidden]="!name.errors.required">
-      Name is required
+      You can’t save a contact like this!
     </div>
   </div>
 
-  <br>
-  <input type="email" [(ngModel)]="model.email" name="email" placeholder="@" (ngModelChange)="$onChange()"/>
+  <div>
+    <label for="name">Full Name</label>
+    <input type="text"
+      autocomplete="off"
+      id="name"
+      class="h1"
+      [(ngModel)]="model.name"
+      name="name"
+      placeholder="e.g. Mad Hatter"
+      required
+      autofocus
+      (ngModelChange)="$onChange()"
+      #name="ngModel" />
 
-  <input type="text" [(ngModel)]="model.phone" name="phone" placeholder="phone" (ngModelChange)="$onChange()"/>
+    <div *ngIf="name.errors && (name.dirty || name.touched)" class="error_message">
+      <div [hidden]="!name.errors.required">
+        Please enter a name
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input type="email" [(ngModel)]="model.email" name="email" placeholder="e.g. mad.hatter@wonderland.biz" (ngModelChange)="$onChange()"/>
+  </div>
+  <div>
+    <label for="phone">Phone</label>
+    <input type="text" [(ngModel)]="model.phone" name="phone" placeholder="e.g. +49 89 2154 3924" (ngModelChange)="$onChange()"/>
+  </div>
 
   <ng-content select="app-contact-form-footer"></ng-content>
 </form>

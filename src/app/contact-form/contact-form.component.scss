@@ -1,0 +1,45 @@
+:host {
+  label {
+    text-transform: uppercase;
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+
+    &[for=name] {
+      margin-top: 0;
+    }
+  }
+
+  input {
+    font-weight: bold;
+    border-bottom: 2px solid #ccc;
+    padding: 0 0 2px 0;
+    font-family: Lato, Helvetica, Arial, sans-serif;
+    width: 50%;
+    min-width: 400px;
+
+    &#name {
+      font-size: 2rem;
+    }
+
+    &.ng-invalid {
+      border-color: #FF4136;
+    }
+
+    &:focus {
+      border-color: #39CCCC;
+    }
+  }
+
+  .error_notice {
+    background-color: #FF4136;
+    color: white;
+    padding: .5rem 1rem;
+    margin: 0 0 1rem 0;
+  }
+
+  .error_message {
+    color: #FF4136;
+    margin-top: .2rem;
+  }
+}
