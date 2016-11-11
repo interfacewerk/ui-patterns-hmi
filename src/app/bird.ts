@@ -44,12 +44,12 @@ export class Bird {
       };
       bird.addEventListener('transitionend', onend);
       setTimeout(() => {
-        bird.classList.add('flying');        
+        bird.classList.add('flying');
         bird.style.left = String(end.left);
         bird.style.top = String(end.top);
       }, 200);  
     });
     return promise;
-      
+
   }
 }
