@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { ContactFormComponent, ContactFormFooter, ContactFormHeader } from './contact-form/contact-form.component';
 import { ExportButtonComponent } from './export-button/export-button.component';
 import { ExportService } from './export.service';
+import { StatefulButtonModule } from 'ng2-stateful-button'
 import { Observable } from 'rxjs/Rx';
 import { AirportDirective } from './airport.directive'
 import { BirdService } from './bird.service';
@@ -58,6 +59,7 @@ export class InitialResolve implements Resolve<void> {
     AirportDirective
   ],
   imports: [
+    StatefulButtonModule,
     BrowserModule,
     FormsModule,
     HttpModule,
