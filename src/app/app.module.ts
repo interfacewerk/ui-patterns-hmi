@@ -15,7 +15,9 @@ import { HomeComponent } from './home/home.component';
 import { ContactFormComponent, ContactFormFooter, ContactFormHeader } from './contact-form/contact-form.component';
 import { ExportButtonComponent } from './export-button/export-button.component';
 import { ExportService } from './export.service';
-import { StatefulButtonModule } from 'angular-stateful-button'
+import { Observable } from 'rxjs/Rx';
+import { AirportDirective } from './airport.directive'
+import { BirdService } from './bird.service';
 
 @Injectable()
 export class InitialResolve implements Resolve<void> {
@@ -24,9 +26,10 @@ export class InitialResolve implements Resolve<void> {
   resolve(): Promise<void> {
     this.contactStore.setIsInitializing(true);
     let pr = new Promise<void>((resolve, reject) => {
-      this.contactsService.list().subscribe(
-        (contacts) => {
-          this.contactStore.setContacts(contacts);
+      Observable.zip(this.contactsService.listContacts(), this.contactsService.listGroups())
+      .subscribe(
+        (result) => {
+          this.contactStore.setContactsAndGroups(result[0], result[1]);
           this.contactStore.setIsInitializing(false);
           resolve();
         },
@@ -51,7 +54,8 @@ export class InitialResolve implements Resolve<void> {
     ContactFormComponent,
     ContactFormHeader,
     ContactFormFooter,
-    ExportButtonComponent
+    ExportButtonComponent,
+    AirportDirective
   ],
   imports: [
     StatefulButtonModule,
@@ -87,7 +91,7 @@ export class InitialResolve implements Resolve<void> {
       }
     ])
   ],
-  providers: [ ContactStore, ContactsService, InitialResolve, ExportService ],
+  providers: [ ContactStore, ContactsService, InitialResolve, ExportService, BirdService ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

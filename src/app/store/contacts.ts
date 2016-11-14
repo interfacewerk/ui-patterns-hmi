@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Contact, EditableContactData } from '../contacts.service';
+import { Group, Contact, EditableContactData } from '../contacts.service';
 
 @Injectable()
 export class ContactStore {
   public
   stateUpdate: Observable<void>;
+
+  setGroupData(id: number, data: Group) {
+    this.nextState(state => findGroupByIdAndDo(id, (g, idx) => {
+      state.groups[idx] = data;
+    }, state));
+  }
 
   setLocalModifications(id: number, data: EditableContactData) {
     this.nextState(state => findContactByIdAndDo(id, contact => {
@@ -41,8 +47,9 @@ export class ContactStore {
     this.nextState(state => state.isInitializing = v);
   }
 
-  setContacts(contacts: Contact[]) {
+  setContactsAndGroups(contacts: Contact[], groups: Group[]) {
     this.nextState(state => {
+      state.groups = groups;
       state.contacts = contacts.map(c => {
         let result: UIContact = {
           id: c.id,
@@ -136,7 +143,8 @@ export class ContactStore {
   constructor() {
     this.state = {
       isInitializing: false,
-      contacts: []
+      contacts: [],
+      groups: []
     };
     this._stateUpdate = new BehaviorSubject<void>(null);
     this.stateUpdate = this._stateUpdate.asObservable();
@@ -162,7 +170,8 @@ export class ContactStore {
 
 export type AppState = {
   isInitializing: boolean,
-  contacts: Array<UIContact>
+  contacts: Array<UIContact>,
+  groups: Array<Group>
 }
 
 export type UIContact = Contact & {
@@ -177,6 +186,14 @@ export type UIContact = Contact & {
 
 function findContactByIdAndDo(id: number, cb:(c: UIContact, idx: number) => any,  state: AppState) {
   state.contacts.some((c, idx) => {
+    if (c.id !== id) return false;
+    cb(c, idx);
+    return true;
+  });
+}
+
+function findGroupByIdAndDo(id: number, cb:(c: Group, idx: number) => any,  state: AppState) {
+  state.groups.some((c, idx) => {
     if (c.id !== id) return false;
     cb(c, idx);
     return true;

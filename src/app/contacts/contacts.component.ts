@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactStore, UIContact } from '../store/contacts';
-import { ContactsService } from '../contacts.service';
+import { ContactsService, Group } from '../contacts.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -12,6 +12,7 @@ export class ContactsComponent implements OnInit {
 
   noContact: boolean;
   contacts: UIContact[];
+  groups: Group[];
 
   constructor(
     private contactsService: ContactsService, 
@@ -26,6 +27,7 @@ export class ContactsComponent implements OnInit {
       let currentState = this.contactStore.getState();
       this.contacts = currentState.contacts.filter(c => !c.isDeleted);
       this.noContact = this.contacts.length === 0;
+      this.groups = currentState.groups;
     });
   }
 }

@@ -16,4 +16,15 @@
 
 <button class="creative" routerLink="/home/new">new</button>
 
+<h1>Groups</h1>
+
+<ul>
+  <li
+    *ngFor="let group of groups"
+    appAirport="{{'group-' + group.id}}"
+    [birdClass]="'group-bird'">
+    {{group.name}} {{group.contactIds.length}}
+  </li>
+</ul>
+
 <app-export-button></app-export-button>
