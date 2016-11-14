@@ -62,7 +62,7 @@ export class Bird {
       }, 200);  
     });
     return promise;
-      
+
   }
 }
 

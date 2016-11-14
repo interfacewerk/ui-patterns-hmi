@@ -1,4 +1,6 @@
-<button [disabled]="nExports === 0" 
+<button 
+  class="utility"
+  [disabled]="nExports === 0" 
   [appAirport]="'export-airport'" 
   (onTakeOff)="onTakeOff()" 
   (onLanding)="onLanding()" 

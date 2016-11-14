@@ -54,6 +54,22 @@ button:active {
 	box-shadow: none;
 }
 
+button:disabled {
+	background: #ccc !important;
+	color: #555 !important;
+	box-shadow: 0px 2px 0px #ccc !important;
+	cursor: not-allowed !important;
+}
+
+button.utility {
+	background: #0074D9;
+	box-shadow: 0px 2px 0px #0054B9;
+}
+
+button.utility:hover {
+	background: #0094F9;
+}
+
 button.destructive {
 	background: #FF4136;
 	box-shadow: 0px 2px 0px #dF2116;
@@ -67,21 +83,11 @@ button.destructive:hover {
 	position: fixed;
 	z-index: 11;
 	transform: scale(1);
-	transition: left 1s ease-in, top 1s ease-out, transform 1s;
+	transition: left 0.5s ease-in, top 0.5s ease-out, transform 0.5s;
 
 	&.flying {
 		transform: scale(0.5);
 	}
-}
-
-.cloud {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(230, 230 ,230 ,0.7);
-	z-index: 9;
 }
 
 .airport {
@@ -93,5 +99,15 @@ button.destructive:hover {
 	width: 30px;
 	height: 30px;
 	border-radius: 15px;
-	background-color: red;
+	background: #0074D9;
+}
+
+a {
+	color: #0074D9;
+	text-decoration: underline;
+}
+
+a:hover {
+	color: #39CCCC;
+	text-decoration: none;
 }
