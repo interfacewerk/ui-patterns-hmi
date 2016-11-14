@@ -14,28 +14,40 @@ export class ExportButtonComponent implements OnInit {
   ngOnInit() { 
     this.nExports = this.exportService.exportedData.length;
 
-    this.exportService.addedToExport.subscribe(event => {
-      let target: HTMLElement = this.elementRef.nativeElement;
+    // this.exportService.addedToExport.subscribe(event => {
+    //   let target: HTMLElement = this.elementRef.nativeElement;
       
-      this.beReadyToReceive();
+    //   let bird = new Bird(event.source, 'export-bird');
       
-      let bird = new Bird(event.source, 'export-bird');
-      
-      bird.flyTo(target).then(() => this.afterReceive());
-    });
-
-    window['EXPORT'] = this;
+    //   bird.flyTo(target, {
+    //     onTakeOff: () => this.beReadyToReceive(),
+    //     onLanding: () => this.receive(),
+    //     landingDelay: 1000
+    //   }).then(() => this.afterReceive());
+    // });
   }
 
   nExports: number;
 
-  beReadyToReceive() {
-    (<HTMLElement>this.elementRef.nativeElement).classList.add('ready-to-receive');
-  }
-
-  afterReceive() {
-    (<HTMLElement>this.elementRef.nativeElement).classList.remove('ready-to-receive');
+  onLanding() {
+    (<HTMLElement>this.elementRef.nativeElement).classList.add('receive');
     this.nExports = this.exportService.exportedData.length;
   }
 
+  onTakeOff() {
+    (<HTMLElement>this.elementRef.nativeElement).classList.add('ready-to-receive');
+  }
+
+  onLanded() {
+    (<HTMLElement>this.elementRef.nativeElement).classList.remove('ready-to-receive');
+    (<HTMLElement>this.elementRef.nativeElement).classList.remove('receive');
+  }
+
 }
+
+
+
+// RECEIVER HAS THREE STATES:
+// * NEUTRAL
+// * READY_TO_RECEIVE
+// * RECEIVED

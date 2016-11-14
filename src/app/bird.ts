@@ -6,15 +6,14 @@ export class Bird {
 
   }
 
-  flyTo(destination: HTMLElement): Promise<void> {
-    let start = {
-      top: this.start.offsetTop + 'px',
-      left: this.start.offsetLeft + 'px'
-    }
-    let end = {
-      top: destination.offsetTop + 'px',
-      left: destination.offsetLeft + 'px'
-    };
+  flyTo(destination: HTMLElement, options: {
+    onTakeOff: () => any,
+    onLanding: () => any,
+    landingDelay: number
+  }): Promise<void> {
+    
+    let start = getCoords(this.start);
+    let end = getCoords(destination);
 
     let promise = new Promise((resolve) => {
       let airport = document.createElement('div');
@@ -29,8 +28,15 @@ export class Bird {
       let bird = document.createElement('div');
       bird.classList.add('bird');
       if (this.customClass) bird.classList.add(this.customClass);
-      bird.style.left = String(start.left);
-      bird.style.top = String(start.top);
+      bird.style.left = start.left + 'px';
+      bird.style.top = start.top + 'px';
+      
+      try {
+        options.onTakeOff && options.onTakeOff();        
+      } catch(e) {
+        console.error(e);
+      }
+      
       document.body.appendChild(bird);
       document.body.appendChild(cloud);
       document.body.appendChild(airport);
@@ -40,16 +46,40 @@ export class Bird {
         bird.remove();
         cloud.remove();
         airport.remove();
-        resolve();
+        try {
+          options.onLanding && options.onLanding();        
+        } catch(e) {
+          console.error(e);
+        }
+
+        setTimeout(() => resolve(), options.landingDelay);
       };
       bird.addEventListener('transitionend', onend);
       setTimeout(() => {
         bird.classList.add('flying');        
-        bird.style.left = String(end.left);
-        bird.style.top = String(end.top);
+        bird.style.left = end.left + 'px';
+        bird.style.top = end.top + 'px';
       }, 200);  
     });
     return promise;
       
   }
+}
+
+function getCoords(elem): { top: number, left: number } { // crossbrowser version
+  var box = elem.getBoundingClientRect();
+
+  var body = document.body;
+  var docEl = document.documentElement;
+
+  var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+  var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+  var clientTop = docEl.clientTop || body.clientTop || 0;
+  var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+  var top  = box.top +  scrollTop - clientTop;
+  var left = box.left + scrollLeft - clientLeft;
+
+  return { top: Math.round(top), left: Math.round(left) };
 }

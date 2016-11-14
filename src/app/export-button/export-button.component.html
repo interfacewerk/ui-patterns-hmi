@@ -1,3 +1,8 @@
-<button [disabled]="nExports === 0">
+<button [disabled]="nExports === 0" 
+  [appAirport]="'export-airport'" 
+  (onTakeOff)="onTakeOff()" 
+  (onLanding)="onLanding()" 
+  (onLanded)="onLanded()"
+  [birdClass]="'export-bird'">
   Export<span *ngIf="nExports > 0" class="number-badge"> {{nExports}}</span>
 </button>

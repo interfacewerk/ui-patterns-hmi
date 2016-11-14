@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ContactStore, UIContact } from '../store/contacts';
-import { ContactsService, EditableContactData } from '../contacts.service';
+import { ContactsService, EditableContactData, Group } from '../contacts.service';
 import { ExportService } from '../export.service';
+import { BirdService } from '../bird.service';
 
 @Component({
   selector: 'app-contact',
@@ -16,7 +17,9 @@ export class ContactComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private contactStore: ContactStore,
     private contactsService: ContactsService,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private birdService: BirdService,
+    private renderer: Renderer
   ) { }
 
   ngOnInit() {
@@ -29,6 +32,11 @@ export class ContactComponent implements OnInit {
           name: this.contact.name,
           phone: this.contact.phone
         };
+        this.groups = this.contactStore.getState().groups;
+        this.isContactInGroup = {};
+        this.groups.forEach(group => {
+          this.isContactInGroup[group.id] = group.contactIds.indexOf(id) > -1;
+        });
       });
     });
   }
@@ -36,7 +44,33 @@ export class ContactComponent implements OnInit {
   contact: UIContact;
   model: EditableContactData;
   isFormValid: boolean;
+  groups: Group[];
+  isContactInGroup: {
+    [groupId: string]: boolean;
+  }
   
+  toggleContactInGroup(group: Group) {
+    if (this.isContactInGroup[group.id]) {
+      let target = <HTMLElement>document.querySelector(`[group-checkbox-id="${group.id}"]`);
+
+      this.contactsService.addContactToGroup({
+        contactId: this.contact.id,
+        groupId: group.id
+      }).subscribe(g => {
+        this.birdService.deliverTo('group-' + group.id, target)
+        .then(() => this.contactStore.setGroupData(group.id, g));
+      });
+    } else {
+      this.contactsService.removeContactFromGroup({
+        contactId: this.contact.id,
+        groupId: group.id
+      })
+      .subscribe(
+        g => this.contactStore.setGroupData(group.id, g)
+      );
+    }
+  }
+
   onModelChange() {
     this.contactStore.setLocalModifications(this.contact.id, this.model);
   }
@@ -57,9 +91,7 @@ export class ContactComponent implements OnInit {
   delete() {
     this.contactStore.startContactDeletion(this.contact.id);
     this.contactsService.remove(this.contact.id).subscribe(
-      () => {
-        this.contactStore.finalizeContactDeletion(this.contact.id);
-      },
+      () => this.contactStore.finalizeContactDeletion(this.contact.id),
       () => alert('ERROR')
     );
   }
@@ -67,16 +99,15 @@ export class ContactComponent implements OnInit {
   undoDelete() {
     this.contactStore.startContactUndoDeletion(this.contact.id);
     this.contactsService.undoRemove(this.contact.id).subscribe(
-      () => {
-        this.contactStore.finalizeContactUndoDeletion(this.contact.id);        
-      },
+      () => this.contactStore.finalizeContactUndoDeletion(this.contact.id),
       () => alert('ERROR')
     );
   }
 
   export($event: MouseEvent) {
     $event.preventDefault();
-    this.exportService.addToExport(this.contact, <HTMLElement>$event.target);
+    this.birdService.deliverTo('export-airport', <HTMLElement>$event.target)
+    .then(() => this.exportService.addToExport(this.contact));
   }
 
 }

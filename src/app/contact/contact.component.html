@@ -14,3 +14,11 @@
 </span>
 <button type="button" class="destructive" (click)="delete()" *ngIf="!contact.isDeleted">Delete</button>
 <button type="button" (click)="export($event)">Export</button>
+
+<br>
+<label *ngFor="let group of groups">
+  <input type="checkbox" 
+    [attr.group-checkbox-id]="group.id"
+    [(ngModel)]="isContactInGroup[group.id]" 
+    (ngModelChange)="toggleContactInGroup(group)" /> {{group.name}}
+</label>
