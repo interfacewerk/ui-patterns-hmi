@@ -58,7 +58,6 @@ export class InitialResolve implements Resolve<void> {
     AirportDirective
   ],
   imports: [
-    StatefulButtonModule,
     BrowserModule,
     FormsModule,
     HttpModule,
