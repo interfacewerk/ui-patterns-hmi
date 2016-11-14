@@ -1,3 +1,15 @@
+<div #loadingPlaceholder class="loadingPlaceholder">
+  <div class="loading-line loading-high"></div>
+  <div class="loading-line loading-inline"></div>
+  <div class="loading-line loading-inline"></div>
+  <div class="loading-line loading-inline"></div>
+  <div>
+    <div class="loading-button loading-inline"></div>
+    <div class="loading-button loading-inline"></div>
+    <div class="loading-button loading-inline"></div>
+  </div>
+</div>
+
 <app-contact-form [model]="model" (onChange)="onModelChange()" (onValid)="isFormValid = $event" (onSubmit)="save()">
   <app-contact-form-footer>
     <button type="submit" [disabled]="!isFormValid || contact.uiState.isUpdating" *ngIf="!contact.isDeleted">
@@ -26,8 +38,8 @@
 
 <br>
 <label *ngFor="let group of groups">
-  <input type="checkbox" 
+  <input type="checkbox"
     [attr.group-checkbox-id]="group.id"
-    [(ngModel)]="isContactInGroup[group.id]" 
+    [(ngModel)]="isContactInGroup[group.id]"
     (ngModelChange)="toggleContactInGroup(group)" /> {{group.name}}
 </label>
