@@ -1,5 +1,17 @@
-import { Component, OnInit, Renderer } from '@angular/core';
-import { Router, ActivatedRoute, Params,  NavigationStart, Event as NavigationEvent } from '@angular/router';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Renderer,
+  ElementRef,
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+  HostBinding
+} from '@angular/core';
+import { Router, ActivatedRoute, Params,  NavigationStart, NavigationEnd, Event as NavigationEvent } from '@angular/router';
 import { ContactStore, UIContact } from '../store/contacts';
 import { ContactsService, EditableContactData, Group } from '../contacts.service';
 import { ExportService } from '../export.service';
@@ -7,13 +19,50 @@ import { BirdService } from '../bird.service';
 import { StatefulButtonModule, ButtonState, delay } from 'ng2-stateful-button';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/pairwise';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['contact.component.scss']
+  styleUrls: ['contact.component.scss'],
+  animations: [
+    trigger('routeAnimation', [
+      state('*',
+        style({
+          opacity: 1,
+          transform: 'translateX(0) scale(1)'
+        })
+      ),
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: 'translateX(-100%) scale(0.5)'
+        }),
+        animate('0.5s ease-in')
+      ]),
+      transition(':leave', [
+        animate('0.5s ease-out', style({
+          opacity: 0,
+          transform: 'translateX(-100%)'
+        }))
+      ])
+    ])
+  ]
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent implements OnInit, OnDestroy {
+  subscriptions: Subscription[] = [];
+
+  @HostBinding('@routeAnimation') get routeAnimation() {
+    return true;
+  }
+
+  @HostBinding('style.display') get display() {
+    return 'block';
+  }
+
+  @HostBinding('style.position') get position() {
+    return 'absolute';
+  }
 
   constructor(
     private router: Router,
@@ -22,28 +71,25 @@ export class ContactComponent implements OnInit {
     private contactsService: ContactsService,
     private exportService: ExportService,
     private birdService: BirdService,
-    private renderer: Renderer
+    private renderer: Renderer,
+    private element: ElementRef
   ) {
-    this.router.events.pairwise().subscribe((e) => {
-      console.log(e);
-    });
-    router.events
-      .filter(event => event instanceof NavigationStart)
-      .subscribe((event:NavigationStart) => {
+    this.subscriptions.push(this.router.events.pairwise().subscribe((e) => {
+      // console.log(e);
+    }));
+
+    this.subscriptions.push(router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe((event: NavigationEnd) => {
         this.isContentLoading = true;
         setTimeout(()=> {
           this.isContentLoading = false;
-        },2000);
-         // You only receive NavigationStart events
-         // NavigationEnd
-          // NavigationCancel
-          // NavigationError
-          // RoutesRecognized
-     });
+        }, 2000);
+      }));
   }
 
-  ngOnDestroy(){
-    console.log("contact comp destroyed");
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   ngOnInit() {
