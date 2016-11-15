@@ -36,7 +36,7 @@
     <button type="button" class="creative" (click)="restore()" [statefulButton]="restoreButtonState">restore</button>
   </span>
   <span *ngIf="!contact.isDeleted">
-    <button type="button" class="utility" (click)="export($event)">Export</button>
+    <!--<button type="button" class="utility" (click)="export($event)">Export</button>-->
     <button type="button" class="destructive" (click)="delete()" [statefulButton]="deleteButtonState">Delete</button>
   </span>
 </div>

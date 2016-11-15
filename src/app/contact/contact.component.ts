@@ -165,10 +165,10 @@ export class ContactComponent implements OnInit {
     ));
   }
 
-  export($event: MouseEvent) {
-    $event.preventDefault();
-    this.birdService.deliverTo('export-airport', <HTMLElement>$event.target)
-    .then(() => this.exportService.addToExport(this.contact));
-  }
+  // export($event: MouseEvent) {
+  //   $event.preventDefault();
+  //   this.birdService.deliverTo('export-airport', <HTMLElement>$event.target)
+  //   .then(() => this.exportService.addToExport(this.contact));
+  // }
 
 }
