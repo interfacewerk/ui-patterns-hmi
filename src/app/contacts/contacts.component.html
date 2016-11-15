@@ -1,27 +1,29 @@
-<h1>Contacts</h1>
+<h1>Contacts <button class="creative" routerLink="/home/new">new</button></h1>
 
 <p *ngIf="noContact">No contacts yet! Add some!</p>
 
 <ul *ngIf="!noContact">
   <li
     *ngFor="let contact of contacts"
-    [appAirport]="'contact-airport-' + contact.id" 
+    [appAirport]="'contact-airport-' + contact.id"
     [birdClass]="'export-bird'"
     [ngClass]="{
-      updating: contact.uiState.isBeingCreated || contact.uiState.isBeingUnremoved || contact.uiState.isUpdating, 
+      updating: contact.uiState.isBeingCreated || contact.uiState.isBeingUnremoved || contact.uiState.isUpdating,
       deleting: contact.uiState.isBeingRemoved,
       error: contact.uiState.updateError
     }">
-    <a routerLink="/home/contact/{{contact.id}}" routerLinkActive="active">{{contact.name}}</a>
-    <span *ngIf="contact.uiState.updateError">Error</span>
-    <span *ngIf="contact.uiState.isUpdating">Saving …</span>
-    <span *ngIf="contact.uiState.isBeingCreated">Creating …</span>
-    <span *ngIf="contact.uiState.isBeingUnremoved">Restoring …</span>
-    <span *ngIf="contact.uiState.isBeingRemoved">Deleting …</span>
+    <a routerLink="/home/contact/{{contact.id}}" routerLinkActive="active">
+      {{contact.name}}
+      <span *ngIf="contact.uiState.updateError">!</span>
+      <span *ngIf="contact.uiState.isUpdating">Saving …</span>
+      <span *ngIf="contact.uiState.isBeingCreated">Creating …</span>
+      <span *ngIf="contact.uiState.isBeingUnremoved">Restoring …</span>
+      <span *ngIf="contact.uiState.isBeingRemoved">Deleting …</span>
+    </a>
   </li>
 </ul>
 
-<button class="creative" routerLink="/home/new">new</button>
+
 
 <!--<h1>Groups</h1>
 

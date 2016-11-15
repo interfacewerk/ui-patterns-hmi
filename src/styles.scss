@@ -148,16 +148,16 @@ a:hover {
 	&.stateful-button--doing {
 		&::before {
 			content: 'DOING';
-			background-color: grey;	
-			color: white;					
+			background-color: grey;
+			color: white;
 		}
 	}
 
 	&.stateful-button--success {
 		&::before {
 			content: 'DONE';
-			background-color: green;	
-			color: white;					
+			background-color: green;
+			color: white;
 		}
 	}
 }
@@ -171,4 +171,97 @@ a:hover {
 	z-index: 1;
 	font-size: 30px;
 	text-align: center;
+}
+
+/* LOADING */
+
+.loading {
+	position: relative;
+	color: transparent;
+
+	&:after {
+		content: '';
+		position: absolute;
+		display: block;
+		width: 20px;
+		height: 20px;
+		top: 50%;
+		left: 50%;
+		margin-left: -10px;
+		margin-top: -10px;
+		border-radius: 10px;
+		box-shadow: 0 1px 0 0 #39CCCC;
+		-ms-animation: ring 1s linear infinite;
+		-moz-animation: ring 1s linear infinite;
+		-webkit-animation: ring 1s linear infinite;
+		-o-animation: ring 1s linear infinite;
+		animation: ring 1s linear infinite;
+	}
+
+	&.white {
+		&:after {
+			box-shadow: 0 1px 0 0 #fff;
+		}
+	}
+}
+
+@-moz-keyframes ring {
+	0% {
+		-moz-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-moz-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@-ms-keyframes ring {
+	0% {
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes ring {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@-o-keyframes ring {
+	0% {
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-o-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes ring {
+	0% {
+		-ms-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-ms-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
 }
