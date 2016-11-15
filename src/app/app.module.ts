@@ -20,6 +20,18 @@ import { StatefulButtonModule } from 'ng2-stateful-button'
 import { Observable } from 'rxjs/Rx';
 import { AirportDirective } from './airport.directive'
 import { BirdService } from './bird.service';
+import { TestComponent } from './test/test.component';
+import { ButtonTestComponent } from './button-test/button-test.component';
+
+@Injectable()
+export class RemovePlaceholder implements Resolve<void> {
+  resolve(): Promise<void> {
+    return new Promise(resolve => {
+      document.getElementById('loading-app-placeholder').remove();
+      resolve();
+    });
+  }
+}
 
 @Injectable()
 export class InitialResolve implements Resolve<void> {
@@ -59,7 +71,9 @@ export class InitialResolve implements Resolve<void> {
     ContactFormHeader,
     ContactFormFooter,
     ExportButtonComponent,
-    AirportDirective
+    AirportDirective,
+    TestComponent,
+    ButtonTestComponent
   ],
   imports: [
     StatefulButtonModule,
@@ -92,10 +106,17 @@ export class InitialResolve implements Resolve<void> {
             component: ContactComponent
           }
         ]
+      },
+      {
+        path: 'test',
+        component: TestComponent,
+        resolve: {
+          removePlaceholder: RemovePlaceholder
+        }
       }
     ])
   ],
-  providers: [ ContactStore, ContactsService, InitialResolve, ExportService, BirdService ],
+  providers: [ ContactStore, ContactsService, InitialResolve, ExportService, BirdService, RemovePlaceholder ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

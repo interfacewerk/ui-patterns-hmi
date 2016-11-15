@@ -7,45 +7,47 @@
     </div>
   </div>
 
-  <div>
-    <label for="name">Full Name</label>
-    <input type="text"
-      autocomplete="off"
-      id="name"
-      class="h1"
-      name="name"
-      placeholder="e.g. Mad Hatter"
-      required
-      [(ngModel)]="model.name"
-      (ngModelChange)="$onChange()"
-      [disabled]="formDisabled"
-      #name="ngModel" />
+  <div class="form-inputs">
+    <div>
+      <label for="name">Full Name</label>
+      <input type="text"
+        autocomplete="off"
+        id="name"
+        class="h1"
+        name="name"
+        placeholder="e.g. Mad Hatter"
+        required
+        [(ngModel)]="model.name"
+        (ngModelChange)="$onChange()"
+        [disabled]="formDisabled"
+        #name="ngModel" />
 
-    <div *ngIf="name.errors && (name.dirty || name.touched)" class="error_message">
-      <div [hidden]="!name.errors.required">
-        Please enter a name
+      <div *ngIf="name.errors && (name.dirty || name.touched)" class="error_message">
+        <div [hidden]="!name.errors.required">
+          Please enter a name
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div>
-      <label for="email">Email</label>
-      <input type="email"
-        name="email"
-        placeholder="e.g. mad.hatter@wonderland.biz"
-        [(ngModel)]="model.email"
-        (ngModelChange)="$onChange()"
-        [disabled]="formDisabled"/>
-    </div>
-    <div>
-      <label for="phone">Phone</label>
-      <input type="text"
-        name="phone"
-        placeholder="e.g. +49 89 2154 3924"
-        [(ngModel)]="model.phone"
-        (ngModelChange)="$onChange()"
-        [disabled]="formDisabled"/>
+    <div class="row">
+      <div>
+        <label for="email">Email</label>
+        <input type="email"
+          name="email"
+          placeholder="e.g. mad.hatter@wonderland.biz"
+          [(ngModel)]="model.email"
+          (ngModelChange)="$onChange()"
+          [disabled]="formDisabled"/>
+      </div>
+      <div>
+        <label for="phone">Phone</label>
+        <input type="text"
+          name="phone"
+          placeholder="e.g. +49 89 2154 3924"
+          [(ngModel)]="model.phone"
+          (ngModelChange)="$onChange()"
+          [disabled]="formDisabled"/>
+      </div>
     </div>
   </div>
 
