@@ -28,12 +28,14 @@ export class InitialResolve implements Resolve<void> {
   resolve(): Promise<void> {
     this.contactStore.setIsInitializing(true);
     let pr = new Promise<void>((resolve, reject) => {
-      Observable.zip(this.contactsService.listContacts(), this.contactsService.listGroups())
+      Observable.timer(2000)
+      .zip(this.contactsService.listContacts(), this.contactsService.listGroups())
       .subscribe(
-        (result) => {
-          this.contactStore.setContactsAndGroups(result[0], result[1]);
+        result => {
+          this.contactStore.setContactsAndGroups(result[1], result[2]);
           this.contactStore.setIsInitializing(false);
           resolve();
+          document.getElementById('loading-app-placeholder').remove();
         },
         () => {
           this.contactStore.setIsInitializing(false);
@@ -57,8 +59,7 @@ export class InitialResolve implements Resolve<void> {
     ContactFormHeader,
     ContactFormFooter,
     ExportButtonComponent,
-    AirportDirective,
-    // StatefulButtonDirective
+    AirportDirective
   ],
   imports: [
     StatefulButtonModule,
