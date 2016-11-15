@@ -9,7 +9,8 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
-  Renderer
+  Renderer,
+  HostBinding
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { EditableContactData } from '../contacts.service';
@@ -21,11 +22,9 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./contact-form.component.scss']
 })
 export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
+  
   @Input() model: EditableContactData;
-  @Input() set formDisabled(v: boolean) {
-    this._formDisabled = v;
-    this.renderer.setElementClass(this.element.nativeElement, 'disabled', v);
-  }
+  @HostBinding('class.disabled') @Input() formDisabled: boolean;
 
   @Output() onChange = new EventEmitter<void>();
   @Output() onValid = new EventEmitter<boolean>();
@@ -55,11 +54,8 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.onSubmit.emit(this.model);
   }
 
-  get formDisabled(): boolean { return this._formDisabled; }
-
   private
   valueChanges: Subscription;
-  _formDisabled: boolean;
 
 }
 
