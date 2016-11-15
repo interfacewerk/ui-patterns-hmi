@@ -12,7 +12,13 @@
 </div>
 
 <div *ngIf="!isContentLoading">
-  <app-contact-form [model]="model" (onChange)="onModelChange()" (onValid)="isFormValid = $event" (onSubmit)="save()" [formDisabled]="isFormDisabled">
+  <app-contact-form 
+    *ngIf="isFormDisplayed" 
+    [model]="model" 
+    (onChange)="onModelChange()" 
+    (onValid)="isFormValid = $event" 
+    (onSubmit)="save()" 
+    [formDisabled]="isFormDisabled">
     <app-contact-form-footer>
       <button type="submit" 
         *ngIf="!contact.isDeleted"
@@ -20,24 +26,17 @@
         [statefulButton]="saveButtonState">
         Save
       </button>
-      <span *ngIf="contact.isDeleted">
-        <p class="notice_deleted">You deleted this contact</p>
-        <button type="button" class="creative" (click)="restore()" [statefulButton]="restoreButtonState">restore</button>
-      </span>
-      <span *ngIf="!contact.isDeleted">
-        <button type="button" class="utility" (click)="export($event)">Export</button>
-        <button type="button" class="destructive" (click)="delete()" [statefulButton]="deleteButtonState">Delete</button>
-      </span>
+      <span *ngIf="!hasModifications">No changes</span>
+      <span *ngIf="hasModifications && !contact.uiState.isUpdating">You have unsaved modifications</span>
     </app-contact-form-footer>
   </app-contact-form>
 
-  <span *ngIf="contact.uiState.isUpdating">UPDATING</span>
-
-  <!--<br>
-  <label *ngFor="let group of groups">
-    <input type="checkbox"
-      [attr.group-checkbox-id]="group.id"
-      [(ngModel)]="isContactInGroup[group.id]"
-      (ngModelChange)="toggleContactInGroup(group)" /> {{group.name}}
-  </label>-->
+  <span *ngIf="contact.isDeleted">
+    <p class="notice_deleted">You deleted {{contact.name}}.</p>
+    <button type="button" class="creative" (click)="restore()" [statefulButton]="restoreButtonState">restore</button>
+  </span>
+  <span *ngIf="!contact.isDeleted">
+    <button type="button" class="utility" (click)="export($event)">Export</button>
+    <button type="button" class="destructive" (click)="delete()" [statefulButton]="deleteButtonState">Delete</button>
+  </span>
 </div>
