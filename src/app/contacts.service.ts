@@ -7,8 +7,13 @@ import { AsyncSubject } from 'rxjs/AsyncSubject';
 export class ContactsService {
   contacts: Contact[];
   groups: Group[];
+  altKey: boolean;
 
   constructor() {
+    document.addEventListener('keydown', (event) => {
+      this.altKey = event.altKey;
+    });
+
     try {
       this.contacts = JSON.parse(localStorage.getItem('server:contacts')) || [];
       this.groups = JSON.parse(localStorage.getItem('server:groups')) || INITIAL_GROUPS;
@@ -41,7 +46,11 @@ export class ContactsService {
     return delayedResponse<Contact>(contact, 2000);
   }
 
-  update(id: number, data: EditableContactData): Observable<Contact> {
+  update(id: number, data: EditableContactData): Observable<{error?: string, contact?: Contact}> {
+    if (this.altKey) {
+      return delayedResponse({error: 'An error occurred'}, 2000);
+    }
+
     let found: Contact;
     
     this.contacts.some(c => {
@@ -55,9 +64,9 @@ export class ContactsService {
     
     if (found) {
       this.save();      
-      return delayedResponse<Contact>(found, 2000);
+      return delayedResponse({contact: found}, 2000);
     } else {
-      return delayedResponse<Contact>(null, 2000);
+      return delayedResponse({error: 'Not found'}, 2000);
     }
   }
 

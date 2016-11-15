@@ -7,8 +7,13 @@
     *ngFor="let contact of contacts"
     [appAirport]="'contact-airport-' + contact.id" 
     [birdClass]="'export-bird'"
-    [ngClass]="{creating: contact.uiState.isBeingCreated || contact.uiState.isBeingUnremoved || contact.uiState.isUpdating, deleting: contact.uiState.isBeingRemoved}">
-    <a routerLink="/home/contact/{{contact.id}}">{{contact.name}}</a>
+    [ngClass]="{
+      updating: contact.uiState.isBeingCreated || contact.uiState.isBeingUnremoved || contact.uiState.isUpdating, 
+      deleting: contact.uiState.isBeingRemoved,
+      error: contact.uiState.updateError
+    }">
+    <a routerLink="/home/contact/{{contact.id}}" routerLinkActive="active">{{contact.name}}</a>
+    <span *ngIf="contact.uiState.updateError">Error</span>
     <span *ngIf="contact.uiState.isUpdating">Saving …</span>
     <span *ngIf="contact.uiState.isBeingCreated">Creating …</span>
     <span *ngIf="contact.uiState.isBeingUnremoved">Restoring …</span>

@@ -39,4 +39,6 @@
     <!--<button type="button" class="utility" (click)="export($event)">Export</button>-->
     <button type="button" class="destructive" (click)="delete()" [statefulButton]="deleteButtonState">Delete</button>
   </span>
+
+  <span *ngIf="updateError">{{updateError}}</span>
 </div>

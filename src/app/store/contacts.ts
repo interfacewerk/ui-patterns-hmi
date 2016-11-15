@@ -37,9 +37,17 @@ export class ContactStore {
     this.nextState(state => findContactByIdAndDo(id, contact => {
       contact.uiState.isUpdating = false;
       contact.uiState.localModifications = null;
+      contact.uiState.updateError = null;
       contact.email = data.email;
       contact.name = data.name;
       contact.phone = data.phone;
+    }, state));
+  }
+  
+  finalizeUpdateContactDataWithError(id: number, error: string) {
+    this.nextState(state => findContactByIdAndDo(id, contact => {
+      contact.uiState.isUpdating = false;
+      contact.uiState.updateError = error;
     }, state));
   }
 
@@ -61,7 +69,8 @@ export class ContactStore {
             isBeingCreated: false,
             isBeingRemoved: false,
             isBeingUnremoved: false,
-            isUpdating: false
+            isUpdating: false,
+            updateError: null
           }
         };
         return result;
@@ -111,7 +120,8 @@ export class ContactStore {
           isBeingCreated: true,
           isBeingRemoved: false,
           isUpdating: false,
-          isBeingUnremoved: false
+          isBeingUnremoved: false,
+          updateError: null
         }
       };
       state.contacts.push(JSON.parse(JSON.stringify(uiContact)));
@@ -132,7 +142,8 @@ export class ContactStore {
             isBeingCreated: false,
             isBeingRemoved: false,
             isUpdating: false,
-            isBeingUnremoved: false
+            isBeingUnremoved: false,
+            updateError: null
           }
         }
       }, state)
@@ -184,6 +195,7 @@ export type UIContact = Contact & {
     isUpdating: boolean
     isBeingUnremoved: boolean
     localModifications?: EditableContactData
+    updateError: string
   }
 }
 

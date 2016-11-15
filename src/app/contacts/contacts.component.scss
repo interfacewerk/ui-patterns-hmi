@@ -1,4 +1,34 @@
 :host {
+  &>ul {
+    margin: 0 0 30px 0;
+    padding: 0;
+
+    li {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+
+      a {
+        margin: 0 -1rem;
+        padding: 0 1rem;
+        display: block;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-decoration: none;
+
+        &.active {
+          color: white;
+          background-color: #a2a2a2;
+        }
+
+        &:hover {
+          background-color: #dadada;
+        }
+      }
+    }
+  }
+
 	li.creating {
 		color: #39CCCC;
 	}
@@ -6,6 +36,13 @@
 	li.deleting {
 		color: #FF4136;
 	}
+
+  li.error {
+    color: red;
+    animation-name: bounce;
+    animation-duration: 0.7s;
+    transform-origin: 0 0;
+  }
 
   .loading-line{
     background-color: #DFDFDF;
@@ -31,4 +68,10 @@
     margin: 10px 10px 10px 0;
     width: 50px;
   }
+}
+
+@keyframes bounce {
+  0%   {transform: scale(1);}
+  50%  {transform: scale(1.5);}
+  100% {transform: scale(1);}
 }

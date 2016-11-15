@@ -104,6 +104,7 @@ export class ContactComponent implements OnInit, OnDestroy {
             name: this.contact.name,
             phone: this.contact.phone
           };
+          this.updateError = this.contact.uiState.updateError;
           this.isFormDisplayed = !this.contact.isDeleted;
           this.isFormDisabled = this.contact.uiState.isUpdating || this.contact.uiState.isBeingRemoved || this.contact.isDeleted;          
           this.groups = this.contactStore.getState().groups;
@@ -132,7 +133,8 @@ export class ContactComponent implements OnInit, OnDestroy {
   restoreButtonState: ButtonState = ButtonState.NEUTRAL;
   isFormDisabled: boolean = false;
   isFormDisplayed: boolean = true;
-
+  updateError: string;
+  
   toggleContactInGroup(group: Group) {
     if (this.isContactInGroup[group.id]) {
       let target = <HTMLElement>document.querySelector(`[group-checkbox-id="${group.id}"]`);
@@ -167,17 +169,16 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.saveButtonState = ButtonState.DOING;
     this.contactStore.startUpdateContactData(this.contact.id, this.model);
     delay(1000).then(() => this.contactsService.update(this.contact.id, this.model)
-      .subscribe(
-        c => {
-          this.saveButtonState = ButtonState.SUCCESS;
-          this.contactStore.finalizeUpdateContactData(this.contact.id, c);
-          delay(2000).then(() => this.saveButtonState = ButtonState.NEUTRAL);
-        },
-        () => {
-          alert('ERROR');
+      .subscribe(c => {
+        if (c.error) {
           this.saveButtonState = ButtonState.NEUTRAL;
+          this.contactStore.finalizeUpdateContactDataWithError(this.contact.id, c.error);
+        } else {
+          this.saveButtonState = ButtonState.SUCCESS;
+          this.contactStore.finalizeUpdateContactData(this.contact.id, c.contact);
+          delay(2000).then(() => this.saveButtonState = ButtonState.NEUTRAL);
         }
-      )
+      })
     );
   }
 
