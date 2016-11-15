@@ -1,7 +1,16 @@
 <h1>Contacts</h1>
 
-<p *ngIf="noContact">No contacts yet! Add some!</p>
+<div #loadingPlaceholderContacts class="loadingPlaceholder">
+  <div class="loading-line loading-inline"></div>
+  <div class="loading-line loading-inline"></div>
+  <div class="loading-line loading-inline"></div>
+  <div>
+    <div class="loading-button loading-inline"></div>
+  </div>
+</div>
 
+<p *ngIf="noContact">No contacts yet! Add some!</p>
+<stateful-button></stateful-button>
 <ul *ngIf="!noContact">
   <li
     *ngFor="let contact of contacts"
@@ -17,6 +26,15 @@
 <button class="creative" routerLink="/home/new">new</button>
 
 <h1>Groups</h1>
+
+<div #loadingPlaceholderGroups class="loadingPlaceholder">
+  <div class="loading-line loading-inline"></div>
+  <div class="loading-line loading-inline"></div>
+  <div class="loading-line loading-inline"></div>
+  <div>
+    <div class="loading-button loading-inline"></div>
+  </div>
+</div>
 
 <ul>
   <li

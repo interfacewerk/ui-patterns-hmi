@@ -1,10 +1,12 @@
 import { Component, OnInit, Renderer } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params,  NavigationStart, Event as NavigationEvent } from '@angular/router';
 import { ContactStore, UIContact } from '../store/contacts';
 import { ContactsService, EditableContactData, Group } from '../contacts.service';
 import { ExportService } from '../export.service';
 import { BirdService } from '../bird.service';
 import { StatefulButtonModule, ButtonState, delay } from 'ng2-stateful-button';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/pairwise';
 
 @Component({
   selector: 'app-contact',
@@ -21,31 +23,57 @@ export class ContactComponent implements OnInit {
     private exportService: ExportService,
     private birdService: BirdService,
     private renderer: Renderer
-  ) { }
+  ) {
+    this.router.events.pairwise().subscribe((e) => {
+      console.log(e);
+    });
+    router.events
+      .filter(event => event instanceof NavigationStart)
+      .subscribe((event:NavigationStart) => {
+        this.isContentLoading = true;
+        setTimeout(()=> {
+          this.isContentLoading = false;
+        },2000);
+         // You only receive NavigationStart events
+         // NavigationEnd
+          // NavigationCancel
+          // NavigationError
+          // RoutesRecognized
+     });
+  }
+
+  ngOnDestroy(){
+    console.log("contact comp destroyed");
+  }
 
   ngOnInit() {
-    this.contactStore.stateUpdate.subscribe(() => {
-      this.activatedRoute.params.forEach(params => {
-        let id = +params['id'];
-        this.contact = this.contactStore.getState().contacts.filter(c => c.id === id)[0];
-        this.model = this.contact.uiState.localModifications || {
-          email: this.contact.email,
-          name: this.contact.name,
-          phone: this.contact.phone
-        };
-        this.groups = this.contactStore.getState().groups;
-        this.isContactInGroup = {};
-        this.groups.forEach(group => {
-          this.isContactInGroup[group.id] = group.contactIds.indexOf(id) > -1;
+    this.isContentLoading = true;
+    setTimeout(() => {
+      this.contactStore.stateUpdate.subscribe(() => {
+        this.activatedRoute.params.forEach(params => {
+          let id = +params['id'];
+          this.contact = this.contactStore.getState().contacts.filter(c => c.id === id)[0];
+          this.model = this.contact.uiState.localModifications || {
+            email: this.contact.email,
+            name: this.contact.name,
+            phone: this.contact.phone
+          };
+          this.groups = this.contactStore.getState().groups;
+          this.isContactInGroup = {};
+          this.groups.forEach(group => {
+            this.isContactInGroup[group.id] = group.contactIds.indexOf(id) > -1;
+          });
         });
         this.hasModifications = !!this.contact.uiState.localModifications;
-      });
-    });
+      })
+      this.isContentLoading = false;
+    },2000);
   }
 
   contact: UIContact;
   model: EditableContactData;
   isFormValid: boolean;
+  isContentLoading: boolean;
   groups: Group[];
   isContactInGroup: {
     [groupId: string]: boolean;

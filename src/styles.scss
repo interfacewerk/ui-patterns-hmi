@@ -83,7 +83,7 @@ button.destructive:hover {
 	position: fixed;
 	z-index: 11;
 	transform: scale(1);
-	transition: left 1s ease-in, top 1s ease-out, transform 1s;
+	transition: left 0.5s ease-in, top 0.5s ease-out, transform 0.5s;
 
 	&.flying {
 		transform: scale(0.5);
