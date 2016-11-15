@@ -183,7 +183,7 @@ a:hover {
 .loading-line{
   background-color: #DFDFDF;
   height: 10px;
-  border-radius: 5px;
+  border-radius: 3px;
   margin: 10px 0;
   width: 50%;
 }
@@ -194,7 +194,8 @@ a:hover {
 
 .loading-high{
   height: 30px;
-  border-radius: 15px;
+  width: 70%;
+  border-radius: 3px;
 }
 
 .loading-button{

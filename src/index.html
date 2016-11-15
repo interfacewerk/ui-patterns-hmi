@@ -11,31 +11,14 @@
 <body>
   <div id="loading-app-placeholder">
     <aside>
-      <h1>Contacts</h1>
       <div class="loadingPlaceholder">
-        <div class="loading-line loading-inline"></div>
-        <div class="loading-line loading-inline"></div>
-        <div class="loading-line loading-inline"></div>
-        <div>
-          <div class="loading-button loading-inline"></div>
-        </div>
-      </div>
-      Loading… 
-    </aside>
-    <main>
-      <div *ngIf="isContentLoading" #loadingPlaceholder class="loadingPlaceholder">
         <div class="loading-line loading-high"></div>
         <div class="loading-line loading-inline"></div>
         <div class="loading-line loading-inline"></div>
         <div class="loading-line loading-inline"></div>
-        <div>
-          <div class="loading-button loading-inline"></div>
-          <div class="loading-button loading-inline"></div>
-          <div class="loading-button loading-inline"></div>
-        </div>
       </div>
-
-      Loading…
+    </aside>
+    <main class="loading large">
     </main>
   </div>
   <app-root></app-root>
