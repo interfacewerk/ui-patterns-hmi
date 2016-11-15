@@ -134,7 +134,7 @@ export class ContactComponent implements OnInit, OnDestroy {
   isFormDisabled: boolean = false;
   isFormDisplayed: boolean = true;
   updateError: string;
-  
+
   toggleContactInGroup(group: Group) {
     if (this.isContactInGroup[group.id]) {
       let target = <HTMLElement>document.querySelector(`[group-checkbox-id="${group.id}"]`);
@@ -168,7 +168,7 @@ export class ContactComponent implements OnInit, OnDestroy {
   save() {
     this.saveButtonState = ButtonState.DOING;
     this.contactStore.startUpdateContactData(this.contact.id, this.model);
-    delay(1000).then(() => this.contactsService.update(this.contact.id, this.model)
+    delay(500).then(() => this.contactsService.update(this.contact.id, this.model)
       .subscribe(c => {
         if (c.error) {
           this.saveButtonState = ButtonState.NEUTRAL;
@@ -186,7 +186,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.deleteButtonState = ButtonState.DOING;
     let contactId = this.contact.id;
     this.contactStore.startContactDeletion(contactId);
-    delay(1000).then(() => this.contactsService.remove(contactId)
+    delay(500).then(() => this.contactsService.remove(contactId)
       .subscribe(
         (r) => {
           this.deleteButtonState = ButtonState.NEUTRAL;
@@ -201,7 +201,7 @@ export class ContactComponent implements OnInit, OnDestroy {
   restore() {
     this.restoreButtonState = ButtonState.DOING;
     this.contactStore.startContactUndoDeletion(this.contact.id);
-    delay(1000).then(() => this.contactsService.undoRemove(this.contact.id).subscribe(
+    delay(500).then(() => this.contactsService.undoRemove(this.contact.id).subscribe(
       () => {
         this.restoreButtonState = ButtonState.NEUTRAL;        
         this.contactStore.finalizeContactUndoDeletion(this.contact.id);
