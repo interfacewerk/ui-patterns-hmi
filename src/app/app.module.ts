@@ -20,7 +20,6 @@ import { StatefulButtonModule } from 'ng2-stateful-button'
 import { Observable } from 'rxjs/Rx';
 import { AirportDirective } from './airport.directive'
 import { BirdService } from './bird.service';
-import { StatefulButtonModule } from 'ng2-stateful-button';
 
 @Injectable()
 export class InitialResolve implements Resolve<void> {
@@ -66,7 +65,6 @@ export class InitialResolve implements Resolve<void> {
     BrowserModule,
     FormsModule,
     HttpModule,
-    StatefulButtonModule,
     RouterModule.forRoot([
       {
         path: '',

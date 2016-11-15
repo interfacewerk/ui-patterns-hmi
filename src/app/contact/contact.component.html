@@ -14,9 +14,11 @@
 <div *ngIf="!isContentLoading">
   <app-contact-form [model]="model" (onChange)="onModelChange()" (onValid)="isFormValid = $event" (onSubmit)="save()">
     <app-contact-form-footer>
-      <button type="submit" [disabled]="!isFormValid || contact.uiState.isUpdating || !hasModifications" *ngIf="!contact.isDeleted">
-        <span *ngIf="contact.uiState.isUpdating">Saving …</span>
-        <span *ngIf="!contact.uiState.isUpdating">Save</span>
+      <button type="submit" 
+        *ngIf="!contact.isDeleted"
+        [disabled]="!isFormValid || contact.uiState.isUpdating || !hasModifications"
+        [statefulButton]="saveButtonState">
+        Save
       </button>
       <span *ngIf="contact.isDeleted">
         <p class="notice_deleted">You deleted this contact</p>
@@ -24,19 +26,12 @@
       </span>
       <span *ngIf="!contact.isDeleted">
         <button type="button" class="utility" (click)="export($event)">Export</button>
-        <button type="button" class="destructive" (click)="delete()">Delete</button>
+        <button type="button" class="destructive" (click)="delete()" [statefulButton]="deleteButtonState">Delete</button>
       </span>
     </app-contact-form-footer>
   </app-contact-form>
 
   <span *ngIf="contact.uiState.isUpdating">UPDATING</span>
-
-  <span *ngIf="contact.isDeleted">
-    You deleted this contact
-    <button class="creative" (click)="undoDelete()">undo delete</button>
-  </span>
-  <button type="button" class="destructive" (click)="delete()" *ngIf="!contact.isDeleted">Delete</button>
-  <button type="button" (click)="export($event)">Export</button>
 
   <br>
   <label *ngFor="let group of groups">
