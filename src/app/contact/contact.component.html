@@ -1,26 +1,16 @@
 
-<div *ngIf="isContentLoading" #loadingPlaceholder class="loadingPlaceholder">
-  <div class="loading-line loading-high"></div>
-  <div class="loading-line loading-inline"></div>
-  <div class="loading-line loading-inline"></div>
-  <div class="loading-line loading-inline"></div>
-  <div>
-    <div class="loading-button loading-inline"></div>
-    <div class="loading-button loading-inline"></div>
-    <div class="loading-button loading-inline"></div>
-  </div>
-</div>
+<div *ngIf="isContentLoading" id="loading-indicator" class="loading large"></div>
 
 <div *ngIf="!isContentLoading">
-  <app-contact-form 
-    *ngIf="isFormDisplayed" 
-    [model]="model" 
-    (onChange)="onModelChange()" 
-    (onValid)="isFormValid = $event" 
-    (onSubmit)="save()" 
+  <app-contact-form
+    *ngIf="isFormDisplayed"
+    [model]="model"
+    (onChange)="onModelChange()"
+    (onValid)="isFormValid = $event"
+    (onSubmit)="save()"
     [formDisabled]="isFormDisabled">
     <app-contact-form-footer>
-      <button type="submit" 
+      <button type="submit"
         *ngIf="!contact.isDeleted"
         [disabled]="!isFormValid || contact.uiState.isUpdating || !hasModifications"
         [statefulButton]="saveButtonState">

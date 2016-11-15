@@ -1,8 +1,18 @@
 :host {
+  width: 100%;
+  height: 100%;
+
 	app-contact-form-footer{
 	  display: block;
     margin-top: 2rem;
 	}
+
+  #loading-indicator {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
   .loading-line{
     background-color: #DFDFDF;
     height: 10px;

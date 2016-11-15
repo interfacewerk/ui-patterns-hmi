@@ -61,7 +61,7 @@ export class ContactComponent implements OnInit, OnDestroy {
   }
 
   @HostBinding('style.position') get position() {
-    return 'absolute';
+    return 'relative';
   }
 
   constructor(
@@ -106,7 +106,7 @@ export class ContactComponent implements OnInit, OnDestroy {
           };
           this.updateError = this.contact.uiState.updateError;
           this.isFormDisplayed = !this.contact.isDeleted;
-          this.isFormDisabled = this.contact.uiState.isUpdating || this.contact.uiState.isBeingRemoved || this.contact.isDeleted;          
+          this.isFormDisabled = this.contact.uiState.isUpdating || this.contact.uiState.isBeingRemoved || this.contact.isDeleted;
           this.groups = this.contactStore.getState().groups;
           this.isContactInGroup = {};
           this.groups.forEach(group => {
@@ -195,7 +195,7 @@ export class ContactComponent implements OnInit, OnDestroy {
         () => alert('ERROR')
       )
     );
-    
+
   }
 
   restore() {
@@ -203,7 +203,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.contactStore.startContactUndoDeletion(this.contact.id);
     delay(500).then(() => this.contactsService.undoRemove(this.contact.id).subscribe(
       () => {
-        this.restoreButtonState = ButtonState.NEUTRAL;        
+        this.restoreButtonState = ButtonState.NEUTRAL;
         this.contactStore.finalizeContactUndoDeletion(this.contact.id);
       },
       () => {
