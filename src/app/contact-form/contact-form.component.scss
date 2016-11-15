@@ -17,8 +17,8 @@
     border-bottom: 2px solid #ccc;
     padding: 0 0 2px 0;
     font-family: Lato, Helvetica, Arial, sans-serif;
-    width: 50%;
-    min-width: 400px;
+    width: calc(100% - 20px);
+    margin: 0 20px 0 0;
 
     &#name {
       font-size: 2rem;
@@ -30,6 +30,15 @@
 
     &:focus {
       border-color: #39CCCC;
+    }
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+
+    > * {
+      flex: 1;
     }
   }
 

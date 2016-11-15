@@ -28,23 +28,25 @@
     </div>
   </div>
 
-  <div>
-    <label for="email">Email</label>
-    <input type="email" 
-      name="email" 
-      placeholder="e.g. mad.hatter@wonderland.biz" 
-      [(ngModel)]="model.email" 
-      (ngModelChange)="$onChange()"
-      [disabled]="formDisabled"/>
-  </div>
-  <div>
-    <label for="phone">Phone</label>
-    <input type="text" 
-      name="phone" 
-      placeholder="e.g. +49 89 2154 3924" 
-      [(ngModel)]="model.phone" 
-      (ngModelChange)="$onChange()"
-      [disabled]="formDisabled"/>
+  <div class="row">
+    <div>
+      <label for="email">Email</label>
+      <input type="email"
+        name="email"
+        placeholder="e.g. mad.hatter@wonderland.biz"
+        [(ngModel)]="model.email"
+        (ngModelChange)="$onChange()"
+        [disabled]="formDisabled"/>
+    </div>
+    <div>
+      <label for="phone">Phone</label>
+      <input type="text"
+        name="phone"
+        placeholder="e.g. +49 89 2154 3924"
+        [(ngModel)]="model.phone"
+        (ngModelChange)="$onChange()"
+        [disabled]="formDisabled"/>
+    </div>
   </div>
 
   <ng-content select="app-contact-form-footer"></ng-content>

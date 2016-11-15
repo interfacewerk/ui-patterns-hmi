@@ -2,6 +2,10 @@
 <div *ngIf="isContentLoading" id="loading-indicator" class="loading large"></div>
 
 <div *ngIf="!isContentLoading">
+  <div *ngIf="contact.isDeleted">
+    <p class="notice">You deleted {{contact.name}}.</p>
+    <button type="button" class="creative" (click)="restore()" [statefulButton]="restoreButtonState">restore</button>
+  </div>
   <app-contact-form
     *ngIf="isFormDisplayed"
     [model]="model"
@@ -18,17 +22,11 @@
       </button>
       <span *ngIf="!hasModifications">No changes</span>
       <span *ngIf="hasModifications && !contact.uiState.isUpdating">You have unsaved modifications</span>
+      <span *ngIf="!contact.isDeleted">
+        <!--<button type="button" class="utility" (click)="export($event)">Export</button>-->
+        <button type="button" class="destructive" (click)="delete()" [statefulButton]="deleteButtonState">Delete</button>
+      </span>
     </app-contact-form-footer>
   </app-contact-form>
-
-  <span *ngIf="contact.isDeleted">
-    <p class="notice_deleted">You deleted {{contact.name}}.</p>
-    <button type="button" class="creative" (click)="restore()" [statefulButton]="restoreButtonState">restore</button>
-  </span>
-  <span *ngIf="!contact.isDeleted">
-    <!--<button type="button" class="utility" (click)="export($event)">Export</button>-->
-    <button type="button" class="destructive" (click)="delete()" [statefulButton]="deleteButtonState">Delete</button>
-  </span>
-
   <span *ngIf="updateError">{{updateError}}</span>
 </div>
