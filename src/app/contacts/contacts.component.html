@@ -14,11 +14,11 @@
     }">
     <a routerLink="/home/contact/{{contact.id}}" routerLinkActive="active">
       {{contact.name}}
-      <span *ngIf="contact.uiState.updateError">!</span>
-      <span *ngIf="contact.uiState.isUpdating">Saving …</span>
-      <span *ngIf="contact.uiState.isBeingCreated">Creating …</span>
-      <span *ngIf="contact.uiState.isBeingUnremoved">Restoring …</span>
-      <span *ngIf="contact.uiState.isBeingRemoved">Deleting …</span>
+      <span class="unsaved" *ngIf="contact.uiState.updateError">(unsaved)</span>
+      <span class="saving" *ngIf="contact.uiState.isUpdating">(saving …)</span>
+      <span class="creating" *ngIf="contact.uiState.isBeingCreated">(creating …)</span>
+      <span class="restoring" *ngIf="contact.uiState.isBeingUnremoved">(restoring …)</span>
+      <span class="deleting" *ngIf="contact.uiState.isBeingRemoved">(deleting …)</span>
     </a>
   </li>
 </ul>
