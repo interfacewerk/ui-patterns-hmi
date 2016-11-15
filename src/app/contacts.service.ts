@@ -80,7 +80,7 @@ export class ContactsService {
     if (result) {
       this.save();
     }
-    return delayedResponse<Group>(result, 2000);
+    return delayedResponse<Group>(result, 0);
   }
 
   removeContactFromGroup(params: {
@@ -102,7 +102,7 @@ export class ContactsService {
     if (result) {
       this.save();
     }
-    return delayedResponse<Group>(result, 2000);
+    return delayedResponse<Group>(result, 0);
   }
 
   remove(id: number): Observable<string> {

@@ -17,7 +17,7 @@ export class AirportDirective implements OnDestroy {
       return bird.flyTo(target, {
         onTakeOff: () => this.onTakeOff.emit(),
         onLanding: () => this.onLanding.emit(),
-        landingDelay: 1000
+        landingDelay: 0
       }).then(() => this.onLanded.emit());
     });
   }

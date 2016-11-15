@@ -1,53 +1,34 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { ExportService } from '../export.service';
+import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { ExportService, ExportEvent } from '../export.service';
 import { Bird } from '../bird';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-export-button',
   templateUrl: './export-button.component.html',
   styleUrls: ['./export-button.component.scss']
 })
-export class ExportButtonComponent implements OnInit {
+export class ExportButtonComponent implements OnInit, OnDestroy {
 
   constructor(private exportService: ExportService, private elementRef: ElementRef) { }
 
-  ngOnInit() { 
+  ngOnInit() {
+    this.element = this.elementRef.nativeElement;
     this.nExports = this.exportService.exportedData.length;
+    this.subscription = this.exportService.exportEvent.subscribe(event => {
+      this.nExports = this.exportService.exportedData.length;
+      if (event === ExportEvent.ADD) {
+        this.element.classList.remove('highlight-badge');
+        setTimeout(() => this.element.classList.add('highlight-badge'), 0);
+      }
+    });
+  }
 
-    // this.exportService.addedToExport.subscribe(event => {
-    //   let target: HTMLElement = this.elementRef.nativeElement;
-      
-    //   let bird = new Bird(event.source, 'export-bird');
-      
-    //   bird.flyTo(target, {
-    //     onTakeOff: () => this.beReadyToReceive(),
-    //     onLanding: () => this.receive(),
-    //     landingDelay: 1000
-    //   }).then(() => this.afterReceive());
-    // });
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   nExports: number;
-
-  onLanding() {
-    (<HTMLElement>this.elementRef.nativeElement).classList.add('receive');
-    this.nExports = this.exportService.exportedData.length;
-  }
-
-  onTakeOff() {
-    (<HTMLElement>this.elementRef.nativeElement).classList.add('ready-to-receive');
-  }
-
-  onLanded() {
-    (<HTMLElement>this.elementRef.nativeElement).classList.remove('ready-to-receive');
-    (<HTMLElement>this.elementRef.nativeElement).classList.remove('receive');
-  }
-
+  element: HTMLElement;
+  subscription: Subscription;
 }
-
-
-
-// RECEIVER HAS THREE STATES:
-// * NEUTRAL
-// * READY_TO_RECEIVE
-// * RECEIVED

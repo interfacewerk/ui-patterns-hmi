@@ -4,6 +4,7 @@ import { ContactStore, UIContact } from '../store/contacts';
 import { ContactsService, EditableContactData, Group } from '../contacts.service';
 import { ExportService } from '../export.service';
 import { BirdService } from '../bird.service';
+import { StatefulButtonModule, ButtonState, delay } from 'ng2-stateful-button';
 
 @Component({
   selector: 'app-contact',
@@ -37,6 +38,7 @@ export class ContactComponent implements OnInit {
         this.groups.forEach(group => {
           this.isContactInGroup[group.id] = group.contactIds.indexOf(id) > -1;
         });
+        this.hasModifications = !!this.contact.uiState.localModifications;
       });
     });
   }
@@ -47,8 +49,11 @@ export class ContactComponent implements OnInit {
   groups: Group[];
   isContactInGroup: {
     [groupId: string]: boolean;
-  }
-  
+  };
+  hasModifications: boolean;
+  deleteButtonState: ButtonState = ButtonState.NEUTRAL;
+  saveButtonState: ButtonState = ButtonState.NEUTRAL;
+
   toggleContactInGroup(group: Group) {
     if (this.isContactInGroup[group.id]) {
       let target = <HTMLElement>document.querySelector(`[group-checkbox-id="${group.id}"]`);
@@ -80,20 +85,36 @@ export class ContactComponent implements OnInit {
   }
 
   save() {
+    this.saveButtonState = ButtonState.DOING;    
     this.contactStore.startUpdateContactData(this.contact.id, this.model);
-
-    this.contactsService.update(this.contact.id, this.model).subscribe(
-      (c) => this.contactStore.finalizeUpdateContactData(this.contact.id, c),
-      () => alert('ERROR')
+    delay(1000).then(() => this.contactsService.update(this.contact.id, this.model)
+      .subscribe(
+        c => {
+          this.saveButtonState = ButtonState.SUCCESS;
+          this.contactStore.finalizeUpdateContactData(this.contact.id, c);
+          delay(2000).then(() => this.saveButtonState = ButtonState.NEUTRAL);
+        },
+        () => {
+          alert('ERROR');
+          this.saveButtonState = ButtonState.NEUTRAL;
+        }
+      )
     );
   }
 
   delete() {
+    this.deleteButtonState = ButtonState.DOING;
     this.contactStore.startContactDeletion(this.contact.id);
-    this.contactsService.remove(this.contact.id).subscribe(
-      () => this.contactStore.finalizeContactDeletion(this.contact.id),
-      () => alert('ERROR')
+    delay(1000).then(() => this.contactsService.remove(this.contact.id)
+      .subscribe(
+        () => {
+          this.deleteButtonState = ButtonState.NEUTRAL;
+          this.contactStore.finalizeContactDeletion(this.contact.id);
+        },
+        () => alert('ERROR')
+      )
     );
+    
   }
 
   undoDelete() {

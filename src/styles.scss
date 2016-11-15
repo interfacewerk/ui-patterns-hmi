@@ -83,7 +83,7 @@ button.destructive:hover {
 	position: fixed;
 	z-index: 11;
 	transform: scale(1);
-	transition: left 0.5s ease-in, top 0.5s ease-out, transform 0.5s;
+	transition: left 1s ease-in, top 1s ease-out, transform 1s;
 
 	&.flying {
 		transform: scale(0.5);
@@ -100,6 +100,19 @@ button.destructive:hover {
 	height: 30px;
 	border-radius: 15px;
 	background: #0074D9;
+	color: white;
+
+	&::before {
+		content: '+1';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		line-height: 30px;
+		font-size: 10px;
+		top: 0;
+		left: 0;
+		text-align: center;
+	}
 }
 
 a {
@@ -110,4 +123,41 @@ a {
 a:hover {
 	color: #39CCCC;
 	text-decoration: none;
+}
+
+.stateful-button {
+	position: relative;
+
+	&::before {
+		width: 100%;
+		height: 100%;
+		z-index: 0;
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: none;
+	}
+
+	&.stateful-button--doing, &.stateful-button--success {
+		&::before {
+			display: block;
+			z-index: 1;
+		}
+	}
+
+	&.stateful-button--doing {
+		&::before {
+			content: 'DOING';
+			background-color: grey;	
+			color: white;					
+		}
+	}
+
+	&.stateful-button--success {
+		&::before {
+			content: 'DONE';
+			background-color: green;	
+			color: white;					
+		}
+	}
 }

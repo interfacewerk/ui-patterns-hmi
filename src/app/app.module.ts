@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { NgModule, Injectable } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -18,6 +19,7 @@ import { ExportService } from './export.service';
 import { Observable } from 'rxjs/Rx';
 import { AirportDirective } from './airport.directive'
 import { BirdService } from './bird.service';
+import { StatefulButtonModule } from 'ng2-stateful-button';
 
 @Injectable()
 export class InitialResolve implements Resolve<void> {
@@ -55,12 +57,14 @@ export class InitialResolve implements Resolve<void> {
     ContactFormHeader,
     ContactFormFooter,
     ExportButtonComponent,
-    AirportDirective
+    AirportDirective,
+    // StatefulButtonDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    StatefulButtonModule,
     RouterModule.forRoot([
       {
         path: '',

@@ -16,14 +16,14 @@ export class Bird {
     let end = getCoords(destination);
 
     let promise = new Promise((resolve) => {
-      let airport = document.createElement('div');
-      airport.innerHTML = destination.outerHTML;
-      airport.classList.add('airport');
-      airport.style.left = destination.offsetLeft + 'px';
-      airport.style.top = destination.offsetTop + 'px';
+      // let airport = document.createElement('div');
+      // airport.innerHTML = destination.outerHTML;
+      // airport.classList.add('airport');
+      // airport.style.left = destination.offsetLeft + 'px';
+      // airport.style.top = destination.offsetTop + 'px';
 
-      let cloud = document.createElement('div');
-      cloud.classList.add('cloud');
+      // let cloud = document.createElement('div');
+      // cloud.classList.add('cloud');
 
       let bird = document.createElement('div');
       bird.classList.add('bird');
@@ -38,14 +38,14 @@ export class Bird {
       }
       
       document.body.appendChild(bird);
-      document.body.appendChild(cloud);
-      document.body.appendChild(airport);
+      // document.body.appendChild(cloud);
+      // document.body.appendChild(airport);
 
       let onend = () => {
         bird.removeEventListener('transitionend', onend);
         bird.remove();
-        cloud.remove();
-        airport.remove();
+        // cloud.remove();
+        // airport.remove();
         try {
           options.onLanding && options.onLanding();        
         } catch(e) {

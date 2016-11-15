@@ -10,13 +10,7 @@
     transition: background-color 0.7s;
   }
 
-  &.ready-to-receive {
-    .number-badge {
-      background-color: red;
-    }
-  }
-
-  &.receive {
+  &.highlight-badge {
     .number-badge {
       animation-name: bounce;
       animation-duration: 0.7s;
@@ -25,7 +19,7 @@
 }
 
 @keyframes bounce {
-  0%   {transform: scale(1);}
-  50%  {transform: scale(2);}
-  100% {transform: scale(1);}
+  0%   {transform: scale(1); background-color: transparent;}
+  50%  {transform: scale(2); background-color: red;}
+  100% {transform: scale(1); background-color: transparent;}
 }
