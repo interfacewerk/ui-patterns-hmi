@@ -1,4 +1,6 @@
 :host {
+  display: block;
+
   label {
     text-transform: uppercase;
     display: block;
@@ -41,5 +43,9 @@
   .error_message {
     color: #FF4136;
     margin-top: .2rem;
+  }
+
+  &.disabled {
+    opacity: 0.3;
   }
 }

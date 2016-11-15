@@ -13,11 +13,12 @@
       autocomplete="off"
       id="name"
       class="h1"
-      [(ngModel)]="model.name"
       name="name"
       placeholder="e.g. Mad Hatter"
       required
+      [(ngModel)]="model.name"
       (ngModelChange)="$onChange()"
+      [disabled]="formDisabled"
       #name="ngModel" />
 
     <div *ngIf="name.errors && (name.dirty || name.touched)" class="error_message">
@@ -29,11 +30,21 @@
 
   <div>
     <label for="email">Email</label>
-    <input type="email" [(ngModel)]="model.email" name="email" placeholder="e.g. mad.hatter@wonderland.biz" (ngModelChange)="$onChange()"/>
+    <input type="email" 
+      name="email" 
+      placeholder="e.g. mad.hatter@wonderland.biz" 
+      [(ngModel)]="model.email" 
+      (ngModelChange)="$onChange()"
+      [disabled]="formDisabled"/>
   </div>
   <div>
     <label for="phone">Phone</label>
-    <input type="text" [(ngModel)]="model.phone" name="phone" placeholder="e.g. +49 89 2154 3924" (ngModelChange)="$onChange()"/>
+    <input type="text" 
+      name="phone" 
+      placeholder="e.g. +49 89 2154 3924" 
+      [(ngModel)]="model.phone" 
+      (ngModelChange)="$onChange()"
+      [disabled]="formDisabled"/>
   </div>
 
   <ng-content select="app-contact-form-footer"></ng-content>

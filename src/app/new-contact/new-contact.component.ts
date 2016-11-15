@@ -29,10 +29,12 @@ export class NewContactComponent implements OnInit {
     this.createButtonState = ButtonState.NEUTRAL;
   }
 
+  get isFormDisabled(): boolean { return this.createButtonState === ButtonState.DOING; }
+
   create() {
-    let tmpId = this.contactStore.startContactCreation(this.newContact);
-    
     this.createButtonState = ButtonState.DOING;
+
+    let tmpId = this.contactStore.startContactCreation(this.newContact);
 
     this.contactsService.create(this.newContact)
     .subscribe(

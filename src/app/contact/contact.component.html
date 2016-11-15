@@ -12,7 +12,7 @@
 </div>
 
 <div *ngIf="!isContentLoading">
-  <app-contact-form [model]="model" (onChange)="onModelChange()" (onValid)="isFormValid = $event" (onSubmit)="save()">
+  <app-contact-form [model]="model" (onChange)="onModelChange()" (onValid)="isFormValid = $event" (onSubmit)="save()" [formDisabled]="isFormDisabled">
     <app-contact-form-footer>
       <button type="submit" 
         *ngIf="!contact.isDeleted"

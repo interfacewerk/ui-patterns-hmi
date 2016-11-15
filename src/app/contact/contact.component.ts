@@ -82,6 +82,7 @@ export class ContactComponent implements OnInit {
   deleteButtonState: ButtonState = ButtonState.NEUTRAL;
   saveButtonState: ButtonState = ButtonState.NEUTRAL;
   restoreButtonState: ButtonState = ButtonState.NEUTRAL;
+  isFormDisabled: boolean = false;
 
   toggleContactInGroup(group: Group) {
     if (this.isContactInGroup[group.id]) {
@@ -114,7 +115,8 @@ export class ContactComponent implements OnInit {
   }
 
   save() {
-    this.saveButtonState = ButtonState.DOING;    
+    this.saveButtonState = ButtonState.DOING;
+    this.isFormDisabled = true;   
     this.contactStore.startUpdateContactData(this.contact.id, this.model);
     delay(1000).then(() => this.contactsService.update(this.contact.id, this.model)
       .subscribe(
@@ -122,10 +124,12 @@ export class ContactComponent implements OnInit {
           this.saveButtonState = ButtonState.SUCCESS;
           this.contactStore.finalizeUpdateContactData(this.contact.id, c);
           delay(2000).then(() => this.saveButtonState = ButtonState.NEUTRAL);
+          this.isFormDisabled = false;
         },
         () => {
           alert('ERROR');
           this.saveButtonState = ButtonState.NEUTRAL;
+          this.isFormDisabled = false;
         }
       )
     );
