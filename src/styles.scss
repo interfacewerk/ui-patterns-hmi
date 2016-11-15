@@ -235,6 +235,18 @@ a:hover {
 			box-shadow: 0 1px 0 0 #fff;
 		}
 	}
+
+	&.large {
+		&:after {
+			width: 60px;
+			height: 60px;
+			top: 50%;
+			left: 50%;
+			margin-left: -30px;
+			margin-top: -30px;
+			border-radius: 30px;
+		}
+	}
 }
 
 @-moz-keyframes ring {
