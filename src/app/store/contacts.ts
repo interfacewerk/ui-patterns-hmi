@@ -46,7 +46,7 @@ export class ContactStore {
   setIsInitializing(v: boolean) {
     this.nextState(state => state.isInitializing = v);
   }
-
+  
   setContactsAndGroups(contacts: Contact[], groups: Group[]) {
     this.nextState(state => {
       state.groups = groups;
@@ -72,13 +72,13 @@ export class ContactStore {
   startContactUndoDeletion(id: number) {
     this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
       c.uiState.isBeingUnremoved = true;
-      c.isDeleted = false;
     }, state));
   }
 
   finalizeContactUndoDeletion(id: number) {
     this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
       c.uiState.isBeingUnremoved = false;
+      c.isDeleted = false;
     }, state));
   }
 
@@ -88,11 +88,14 @@ export class ContactStore {
     }, state));
   }
 
-  finalizeContactDeletion(id: number) {
-    this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
-      c.isDeleted = true;
-      c.uiState.isBeingRemoved = false;      
-    }, state));
+  finalizeContactDeletion(id: number, groups: Group[]) {
+    this.nextState(state => {
+      findContactByIdAndDo(id, (c, idx) => {
+        c.isDeleted = true;
+        c.uiState.isBeingRemoved = false;      
+      }, state);
+      state.groups = groups;
+    });
   }
 
   startContactCreation(contact: EditableContactData): number {

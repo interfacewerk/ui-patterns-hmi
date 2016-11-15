@@ -67,7 +67,7 @@ export class ContactComponent implements OnInit {
         this.hasModifications = !!this.contact.uiState.localModifications;
       })
       this.isContentLoading = false;
-    },2000);
+    }, 2000);
   }
 
   contact: UIContact;
@@ -81,6 +81,7 @@ export class ContactComponent implements OnInit {
   hasModifications: boolean;
   deleteButtonState: ButtonState = ButtonState.NEUTRAL;
   saveButtonState: ButtonState = ButtonState.NEUTRAL;
+  restoreButtonState: ButtonState = ButtonState.NEUTRAL;
 
   toggleContactInGroup(group: Group) {
     if (this.isContactInGroup[group.id]) {
@@ -135,9 +136,9 @@ export class ContactComponent implements OnInit {
     this.contactStore.startContactDeletion(this.contact.id);
     delay(1000).then(() => this.contactsService.remove(this.contact.id)
       .subscribe(
-        () => {
+        (r) => {
           this.deleteButtonState = ButtonState.NEUTRAL;
-          this.contactStore.finalizeContactDeletion(this.contact.id);
+          this.contactStore.finalizeContactDeletion(this.contact.id, r.data.groups);
         },
         () => alert('ERROR')
       )
@@ -145,12 +146,19 @@ export class ContactComponent implements OnInit {
     
   }
 
-  undoDelete() {
+  restore() {
+    this.restoreButtonState = ButtonState.DOING;
     this.contactStore.startContactUndoDeletion(this.contact.id);
-    this.contactsService.undoRemove(this.contact.id).subscribe(
-      () => this.contactStore.finalizeContactUndoDeletion(this.contact.id),
-      () => alert('ERROR')
-    );
+    delay(1000).then(() => this.contactsService.undoRemove(this.contact.id).subscribe(
+      () => {
+        this.restoreButtonState = ButtonState.NEUTRAL;        
+        this.contactStore.finalizeContactUndoDeletion(this.contact.id);
+      },
+      () => {
+        this.restoreButtonState = ButtonState.NEUTRAL;
+        alert('ERROR')
+      }
+    ));
   }
 
   export($event: MouseEvent) {

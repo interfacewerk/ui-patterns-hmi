@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContactStore, UIContact } from '../store/contacts';
 import { ContactsService, EditableContactData } from '../contacts.service';
+import { ButtonState } from 'ng2-stateful-button'
 
 @Component({
   selector: 'app-new-contact',
@@ -15,6 +16,7 @@ export class NewContactComponent implements OnInit {
     phone: ''
   };
   isFormValid: boolean;
+  createButtonState: ButtonState;
 
   constructor(
     private contactStore: ContactStore,
@@ -24,17 +26,24 @@ export class NewContactComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.createButtonState = ButtonState.NEUTRAL;
   }
 
   create() {
     let tmpId = this.contactStore.startContactCreation(this.newContact);
+    
+    this.createButtonState = ButtonState.DOING;
+
     this.contactsService.create(this.newContact)
     .subscribe(
       c => {
         this.contactStore.finalizeContactCreation(tmpId, c);
         this.router.navigate(['/home/contact', c.id]);
       },
-      () => alert('ERROR')
+      () => {
+        alert('ERROR');
+        this.createButtonState = ButtonState.NEUTRAL;
+      }
     );
   }
 

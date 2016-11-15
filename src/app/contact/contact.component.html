@@ -22,7 +22,7 @@
       </button>
       <span *ngIf="contact.isDeleted">
         <p class="notice_deleted">You deleted this contact</p>
-        <button class="creative" (click)="undoDelete()">restore</button>
+        <button type="button" class="creative" (click)="restore()" [statefulButton]="restoreButtonState">restore</button>
       </span>
       <span *ngIf="!contact.isDeleted">
         <button type="button" class="utility" (click)="export($event)">Export</button>

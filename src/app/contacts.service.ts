@@ -105,17 +105,19 @@ export class ContactsService {
     return delayedResponse<Group>(result, 0);
   }
 
-  remove(id: number): Observable<string> {
+  remove(id: number): Observable<{error?: string, data?: { groups: Group[] }}> {
     let idx = this.contacts.map(c => c.id).indexOf(id);
     if (idx === -1) {
-      return delayedResponse('No such contact', 2000);
+      return delayedResponse({error: 'No such contact'}, 2000);
     }
     this.contacts[idx].isDeleted = true;
-    this.groups.forEach(group => {
-      group.contactIds = group.contactIds.filter(c => c !== id);
-    });
+    this.groups.forEach(group => group.contactIds = group.contactIds.filter(c => c !== id));
     this.save();
-    return delayedResponse(null, 2000);
+    return delayedResponse({
+      data: {
+        groups: this.groups
+      }
+    }, 2000);
   }
 
   undoRemove(id: number): Observable<string> {
