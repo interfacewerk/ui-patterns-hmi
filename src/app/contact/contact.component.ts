@@ -137,12 +137,13 @@ export class ContactComponent implements OnInit {
 
   delete() {
     this.deleteButtonState = ButtonState.DOING;
-    this.contactStore.startContactDeletion(this.contact.id);
-    delay(1000).then(() => this.contactsService.remove(this.contact.id)
+    let contactId = this.contact.id;
+    this.contactStore.startContactDeletion(contactId);
+    delay(1000).then(() => this.contactsService.remove(contactId)
       .subscribe(
         (r) => {
           this.deleteButtonState = ButtonState.NEUTRAL;
-          this.contactStore.finalizeContactDeletion(this.contact.id, r.data.groups);
+          this.contactStore.finalizeContactDeletion(contactId, r.data.groups);
         },
         () => alert('ERROR')
       )
