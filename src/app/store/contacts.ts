@@ -94,6 +94,7 @@ export class ContactStore {
   startContactDeletion(id: number) {
     this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
       c.uiState.isBeingRemoved = true;
+      c.uiState.updateError = null;
     }, state));
   }
 

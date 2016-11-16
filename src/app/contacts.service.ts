@@ -14,6 +14,10 @@ export class ContactsService {
       this.altKey = event.altKey;
     });
 
+    document.addEventListener('keyup', (event) => {
+      this.altKey = event.altKey;
+    });
+
     try {
       this.contacts = JSON.parse(localStorage.getItem('server:contacts')) || [];
       this.groups = JSON.parse(localStorage.getItem('server:groups')) || INITIAL_GROUPS;
