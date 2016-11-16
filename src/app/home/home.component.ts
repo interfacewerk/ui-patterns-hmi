@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  shouldDisplayModal: boolean = false;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  displayModal($event: KeyboardEvent) {
+    if ($event.key === 'e' && $event.ctrlKey) {
+      this.shouldDisplayModal = true;
+    }
   }
 
 }
