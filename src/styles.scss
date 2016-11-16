@@ -301,7 +301,8 @@ a:hover {
 		background-color: grey !important;
 		color: transparent !important;
 		box-shadow: none !important;
-
+		cursor: wait !important;
+		
 		&::after {
 			box-shadow: 0 1px 0 0 #fff;
 		}
