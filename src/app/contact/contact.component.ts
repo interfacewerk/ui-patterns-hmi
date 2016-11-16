@@ -24,46 +24,11 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['contact.component.scss'],
-  animations: [
-    trigger('routeAnimation', [
-      state('*',
-        style({
-          opacity: 1,
-          transform: 'translateX(0) scale(1)'
-        })
-      ),
-      transition(':enter', [
-        style({
-          opacity: 0,
-          transform: 'translateX(-100%) scale(0.5)'
-        }),
-        animate('0.5s ease-in')
-      ]),
-      transition(':leave', [
-        animate('0.5s ease-out', style({
-          opacity: 0,
-          transform: 'translateX(-100%)'
-        }))
-      ])
-    ])
-  ]
+  styleUrls: ['contact.component.scss']
 })
 export class ContactComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   contactSubscriptions: Subscription[] = [];
-
-  @HostBinding('@routeAnimation') get routeAnimation() {
-    return true;
-  }
-
-  @HostBinding('style.display') get display() {
-    return 'block';
-  }
-
-  @HostBinding('style.position') get position() {
-    return 'relative';
-  }
 
   constructor(
     private router: Router,
