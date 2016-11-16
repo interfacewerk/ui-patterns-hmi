@@ -167,15 +167,16 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   save() {
     this.saveButtonState = ButtonState.DOING;
-    this.contactStore.startUpdateContactData(this.contact.id, this.model);
-    delay(500).then(() => this.contactsService.update(this.contact.id, this.model)
+    let contactId = this.contact.id;
+    this.contactStore.startUpdateContactData(contactId, this.model);
+    delay(500).then(() => this.contactsService.update(contactId, this.model)
       .subscribe(c => {
         if (c.error) {
           this.saveButtonState = ButtonState.NEUTRAL;
-          this.contactStore.finalizeUpdateContactDataWithError(this.contact.id, c.error);
+          this.contactStore.finalizeUpdateContactDataWithError(contactId, c.error);
         } else {
           this.saveButtonState = ButtonState.SUCCESS;
-          this.contactStore.finalizeUpdateContactData(this.contact.id, c.contact);
+          this.contactStore.finalizeUpdateContactData(contactId, c.contact);
           delay(2000).then(() => this.saveButtonState = ButtonState.NEUTRAL);
         }
       })
