@@ -8,6 +8,7 @@
     [@flyInOut]="contact.isDeleted?'out':'in'"
     [appAirport]="'contact-airport-' + contact.id"
     [birdClass]="'export-bird'"
+    landingStripPlacement="right middle"
     [ngClass]="{
       updating: contact.uiState.isBeingCreated || contact.uiState.isBeingUnremoved || contact.uiState.isUpdating,
       deleting: contact.uiState.isBeingRemoved,

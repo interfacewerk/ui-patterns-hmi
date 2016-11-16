@@ -7,6 +7,7 @@ export class Bird {
   }
 
   flyTo(destination: HTMLElement, options: {
+    placement: string,
     onTakeOff: () => any,
     onLanding: () => any,
     landingDelay: number
@@ -56,9 +57,34 @@ export class Bird {
       };
       bird.addEventListener('transitionend', onend);
       setTimeout(() => {
-        bird.classList.add('flying');        
-        bird.style.left = end.left + 'px';
-        bird.style.top = end.top + 'px';
+        bird.classList.add('flying');
+        let splitPlacement = options.placement.split(' ');
+        let placement = {
+          horizontal: {
+            left: splitPlacement.indexOf('left') > -1,
+            center: splitPlacement.indexOf('center') > -1,
+            right: splitPlacement.indexOf('right') > -1
+          },
+          vertical: {
+            top: splitPlacement.indexOf('top') > -1,
+            middle: splitPlacement.indexOf('middle') > -1,
+            bottom: splitPlacement.indexOf('bottom') > -1
+          }
+        };
+        if (placement.horizontal.left) {
+          bird.style.left = end.left + 'px';
+        } else if (placement.horizontal.center) {
+          bird.style.left = end.left + 0.5 * destination.clientWidth + 'px';
+        } else if (placement.horizontal.right) {
+          bird.style.left = end.left + destination.clientWidth + 'px';
+        }
+        if (placement.vertical.top) {
+          bird.style.top = end.top + 'px';
+        } else if (placement.vertical.middle) {
+          bird.style.top = end.top + 0.5 * destination.clientHeight + 'px';
+        } else if (placement.vertical.bottom) {
+          bird.style.top = end.top + destination.clientHeight + 'px';
+        }
       }, 200);  
     });
     return promise;

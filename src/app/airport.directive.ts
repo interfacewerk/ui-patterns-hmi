@@ -15,6 +15,7 @@ export class AirportDirective implements OnDestroy {
       let bird = new Bird(source, this.birdClass);
       
       return bird.flyTo(target, {
+        placement: this.landingStripPlacement,
         onTakeOff: () => this.onTakeOff.emit(),
         onLanding: () => this.onLanding.emit(),
         landingDelay: 0
@@ -23,6 +24,7 @@ export class AirportDirective implements OnDestroy {
   }
 
   @Input() birdClass: string = '';
+  @Input() landingStripPlacement: string = 'center middle';
 
   @Output() onLanding = new EventEmitter<void>();
   @Output() onTakeOff = new EventEmitter<void>();
