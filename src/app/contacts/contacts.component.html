@@ -4,7 +4,8 @@
 
 <ul *ngIf="!noContact">
   <li
-    *ngFor="let contact of contacts"
+    *ngFor="let contact of contacts; trackBy: trackById"
+    [@flyInOut]="contact.isDeleted?'out':'in'"
     [appAirport]="'contact-airport-' + contact.id"
     [birdClass]="'export-bird'"
     [ngClass]="{
