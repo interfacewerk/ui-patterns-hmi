@@ -4847,9 +4847,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-ng2-stateful-button@beta:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/ng2-stateful-button/-/ng2-stateful-button-0.0.1.tgz#f3569b6dcc2871a901bd22001a76bcc446359a93"
+ng2-stateful-button@latest:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/ng2-stateful-button/-/ng2-stateful-button-0.0.7.tgz#6ffeed8ccf60f7e00578bde07820f93aa76d589a"
 
 no-case@^2.2.0:
   version "2.3.0"
