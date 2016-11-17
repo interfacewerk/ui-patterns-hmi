@@ -11,7 +11,6 @@
     </button>
   </stateful-button>
 </div>
-<p *ngIf="updateError" class="notice warning">{{updateError}}</p>
 <app-contact-form
   *ngIf="isFormDisplayed"
   [model]="model"
@@ -25,6 +24,7 @@
         <sb-label-idle>Save</sb-label-idle>
         <sb-label-doing>Saving</sb-label-doing>
         <sb-label-success>Saved</sb-label-success>
+        <sb-label-failure>Save failed!</sb-label-failure>
       </button>
 
     </stateful-button>
@@ -42,3 +42,5 @@
     </span>
   </app-contact-form-footer>
 </app-contact-form>
+
+<p *ngIf="updateError" class="notice warning">{{updateError}}</p>

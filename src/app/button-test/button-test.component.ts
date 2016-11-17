@@ -16,7 +16,10 @@ export class ButtonTestComponent implements OnInit {
   doing: ButtonState = ButtonState.DOING;
   success: ButtonState = ButtonState.SUCCESS;
   idle: ButtonState = ButtonState.IDLE;
+  failure: ButtonState = ButtonState.FAILURE;
+  
   dynamic: ButtonState = ButtonState.IDLE;
+
   disabled: boolean = false;
 
   clickMe() {

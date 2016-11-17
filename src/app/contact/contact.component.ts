@@ -156,6 +156,8 @@ export class ContactComponent implements OnInit, OnDestroy {
       this.contactSubscriptions.push(
         request
           .filter(c => !!c.error)
+          .map(c => this.saveButtonState = ButtonState.FAILURE)
+          .delay(2000)
           .subscribe(c => this.saveButtonState = ButtonState.IDLE),
         request
           .filter(c => !c.error)

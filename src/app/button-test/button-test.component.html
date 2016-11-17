@@ -14,9 +14,16 @@
   </button>
 </stateful-button>
 <br>
-<stateful-button [buttonState]="neutral">
+<stateful-button [buttonState]="idle">
   <button [disabled]="disabled">
     <sb-label-idle>My button</sb-label-idle>    
+  </button>
+</stateful-button>
+<br>
+<stateful-button [buttonState]="failure">
+  <button [disabled]="disabled">
+    <sb-label-idle>My button</sb-label-idle>    
+    <sb-label-failure>FAILUREUUUUUREURUEUER</sb-label-failure>    
   </button>
 </stateful-button>
 

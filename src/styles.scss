@@ -293,4 +293,11 @@ stateful-button {
 		box-shadow: none !important;
 		cursor: default !important;
 	}
+
+	&.stateful-button--failure button {
+		background-color: #FF4136 !important;
+		color: white !important;
+		box-shadow: none !important;
+		cursor: default !important;
+	}
 }
