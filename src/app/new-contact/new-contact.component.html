@@ -9,3 +9,11 @@
     </stateful-button>  
   </app-contact-form-footer>
 </app-contact-form>
+
+<div class="feedback-select">
+  <h3>Feedback</h3>
+
+  <label *ngFor="let feedback of feedbacks">
+    <input type="radio" [(ngModel)]="feedbackType" [value]="feedback.value"/> {{feedback.text}}
+  </label>
+</div>

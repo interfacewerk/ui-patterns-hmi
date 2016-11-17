@@ -3,4 +3,13 @@
     display: block;
     margin-top: 2rem;
   }
+
+  .feedback-select {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+    background: lightgray;
+    border-top-left-radius: 3px;
+  }
 }

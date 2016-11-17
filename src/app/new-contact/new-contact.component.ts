@@ -47,6 +47,12 @@ export class NewContactComponent implements OnInit {
   isFormDisabled: boolean = false;
 
   create() {
+    switch(this.feedbackType) {
+      case Feedback.LONG: return this.longCreate();
+      case Feedback.OPTIMAL: return this.optimalCreate();
+      case Feedback.OPTIMISTIC: return this.optimisticCreate();
+    }
+
     this.createButtonState = ButtonState.DOING;
     this.isFormDisabled = true;
 
@@ -58,7 +64,7 @@ export class NewContactComponent implements OnInit {
 
     delay(selectedDelay).then(() => this.contactsService.create(this.newContact)
     .subscribe(
-      c => {    
+      c => {
         this.contactStore.finalizeContactCreation(tmpId, c);
         this.createButtonState = ButtonState.SUCCESS;
         delay(1000).then(() => this.router.navigate(['/home/contact', c.id]));
@@ -71,4 +77,82 @@ export class NewContactComponent implements OnInit {
     ));
   }
 
+  longCreate() {
+    this.createButtonState = ButtonState.DOING;
+    this.isFormDisabled = true;
+
+    delay(10000)
+    .then(() => {
+      this.contactsService.create(this.newContact)
+      .subscribe(c => {
+        let tmpId = this.contactStore.startContactCreation(this.newContact);
+        this.contactStore.finalizeContactCreation(tmpId, c);
+        this.router.navigate(['/home/contact', c.id]);
+      });
+    });
+  }
+
+  optimalCreate() {
+    this.createButtonState = ButtonState.DOING;
+    this.isFormDisabled = true;
+
+    let tmpId = this.contactStore.startContactCreation(this.newContact);
+    
+    delay(0).then(() => this.birdService.deliverTo(
+      `contact-airport-${tmpId}`, 
+      this.createButton.nativeElement
+    ));
+
+    delay(2000).then(() => {
+      this.contactsService.create(this.newContact)
+      .subscribe(c => {
+        this.contactStore.finalizeContactCreation(tmpId, c);
+        this.createButtonState = ButtonState.SUCCESS;
+        delay(1000).then(() => this.router.navigate(['/home/contact', c.id]))
+      });
+    });
+    
+    
+  }
+
+  optimisticCreate() {
+    this.createButtonState = ButtonState.DOING;
+    this.isFormDisabled = true;
+
+    let tmpId = this.contactStore.startContactCreation(this.newContact);
+    delay(0).then(() => this.birdService.deliverTo(
+      `contact-airport-${tmpId}`, 
+      this.createButton.nativeElement
+    ));
+    
+    this.contactsService.create(this.newContact)
+      .subscribe(c => {
+        this.contactStore.finalizeContactCreation(tmpId, c);
+        this.router.navigate(['/home/contact', c.id]);
+      });
+
+  }
+
+  feedbackType: Feedback = Feedback.OPTIMAL;
+
+  feedbacks = [
+    {
+      text: 'LONG',
+      value: Feedback.LONG
+    },
+    {
+      text: 'OPTIMISTIC',
+      value: Feedback.OPTIMISTIC
+    },
+    {
+      text: 'OPTIMAL',
+      value: Feedback.OPTIMAL
+    }
+  ]
+}
+
+enum Feedback {
+  LONG,
+  OPTIMISTIC,
+  OPTIMAL
 }
