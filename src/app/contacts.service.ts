@@ -52,11 +52,11 @@ export class ContactsService {
 
   update(id: number, data: EditableContactData): Observable<{error?: string, contact?: Contact}> {
     if (this.altKey) {
-      return delayedResponse({error: 'An error occurred'}, 2000);
+      return delayedResponse({error: 'This contact could not be saved. Your network seems to be offline.'}, 2000);
     }
 
     let found: Contact;
-    
+
     this.contacts.some(c => {
       if (c.id !== id) return false;
       c.email = data.email;
@@ -65,9 +65,9 @@ export class ContactsService {
       found = c;
       return true;
     });
-    
+
     if (found) {
-      this.save();      
+      this.save();
       return delayedResponse({contact: found}, 2000);
     } else {
       return delayedResponse({error: 'Not found'}, 2000);
