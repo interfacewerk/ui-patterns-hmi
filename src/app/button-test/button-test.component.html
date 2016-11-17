@@ -1,10 +1,46 @@
 <h2>Button tests</h2>
 
-<button [statefulButton]="doing">My button</button>
+<stateful-button [buttonState]="doing">
+  <button [disabled]="disabled">
+    <sb-label-idle>My button</sb-label-idle>    
+    <sb-label-doing>Doing</sb-label-doing>  
+  </button>
+</stateful-button>
 <br>
-<button [statefulButton]="success">SUCCESS</button>
+<stateful-button [buttonState]="success">
+  <button [disabled]="disabled">
+    <sb-label-idle>My button</sb-label-idle>    
+    <sb-label-success>Success</sb-label-success>
+  </button>
+</stateful-button>
 <br>
-<button [statefulButton]="neutral">NEUTRAL</button>
+<stateful-button [buttonState]="neutral">
+  <button [disabled]="disabled">
+    <sb-label-idle>My button</sb-label-idle>    
+  </button>
+</stateful-button>
 
+<br>
 
-<button [statefulButton]="dynamic" (click)="clickMe()">Click me!</button>
+<stateful-button [buttonState]="dynamic">
+  <button (click)="clickMe()" [disabled]="disabled">
+    <sb-label-idle>Click me!</sb-label-idle>
+    <sb-label-doing>Doing</sb-label-doing>
+    <sb-label-success>Done! Great!</sb-label-success>
+  </button>
+</stateful-button>
+
+<label>Disabled? <input type="checkbox" [(ngModel)]="disabled"/></label>
+
+<h4>Inside a form</h4>
+<form (submit)="onSubmit()">
+  <input type="text" placeholder="some text here" />
+  <stateful-button [buttonState]="dynamic">
+    <button type="submit">
+      <sb-label-idle>Submit</sb-label-idle>
+      <sb-label-doing>Doing</sb-label-doing>
+      <sb-label-success>Done! Great!</sb-label-success>
+    </button>
+    
+  </stateful-button>
+</form>

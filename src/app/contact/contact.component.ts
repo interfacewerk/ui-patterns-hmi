@@ -66,9 +66,9 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.contactSubscriptions.forEach(s => s.unsubscribe());
     this.contactSubscriptions = [];
 
-    this.saveButtonState = ButtonState.NEUTRAL;
-    this.deleteButtonState = ButtonState.NEUTRAL;
-    this.restoreButtonState = ButtonState.NEUTRAL;
+    this.saveButtonState = ButtonState.IDLE;
+    this.deleteButtonState = ButtonState.IDLE;
+    this.restoreButtonState = ButtonState.IDLE;
 
     this.contactSubscriptions.push(this.contactStore.stateUpdate.subscribe(() => {
       this.activatedRoute.params.forEach(params => {
@@ -111,9 +111,9 @@ export class ContactComponent implements OnInit, OnDestroy {
     [groupId: string]: boolean;
   };
   hasModifications: boolean;
-  deleteButtonState: ButtonState = ButtonState.NEUTRAL;
-  saveButtonState: ButtonState = ButtonState.NEUTRAL;
-  restoreButtonState: ButtonState = ButtonState.NEUTRAL;
+  deleteButtonState: ButtonState = ButtonState.IDLE;
+  saveButtonState: ButtonState = ButtonState.IDLE;
+  restoreButtonState: ButtonState = ButtonState.IDLE;
   isFormDisabled: boolean = false;
   isFormDisplayed: boolean = true;
   updateError: string;
@@ -166,12 +166,12 @@ export class ContactComponent implements OnInit, OnDestroy {
       this.contactSubscriptions.push(
         request
           .filter(c => !!c.error)
-          .subscribe(c => this.saveButtonState = ButtonState.NEUTRAL),
+          .subscribe(c => this.saveButtonState = ButtonState.IDLE),
         request
           .filter(c => !c.error)
           .map(c => this.saveButtonState = ButtonState.SUCCESS)
           .delay(2000)
-          .subscribe(c => this.saveButtonState = ButtonState.NEUTRAL)
+          .subscribe(c => this.saveButtonState = ButtonState.IDLE)
       );
     });
   }
@@ -184,7 +184,7 @@ export class ContactComponent implements OnInit, OnDestroy {
       let request = this.contactsService.remove(contactId).share();
 
       this.contactSubscriptions.push(
-        request.subscribe(c => this.deleteButtonState = ButtonState.NEUTRAL)
+        request.subscribe(c => this.deleteButtonState = ButtonState.IDLE)
       );
 
       request
@@ -203,7 +203,7 @@ export class ContactComponent implements OnInit, OnDestroy {
         .subscribe(() => this.contactStore.finalizeContactUndoDeletion(contactId));
       
       this.contactSubscriptions.push(
-        request.subscribe(() => this.restoreButtonState = ButtonState.NEUTRAL)
+        request.subscribe(() => this.restoreButtonState = ButtonState.IDLE)
       );
     });
   }

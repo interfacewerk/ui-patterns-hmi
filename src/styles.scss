@@ -170,7 +170,7 @@ a:hover {
 }
 
 /* LOADING */
-.loading, .stateful-button--doing {
+.loading {
 	position: relative;
 	color: transparent;
 
@@ -279,51 +279,18 @@ a:hover {
 	}
 }
 
-.stateful-button {
-	position: relative;
-
-	&::after {
-		position: absolute;
-		display: none;
-	}
-
-	&.stateful-button--doing, &.stateful-button--success {
-		box-shadow: none;
-		top: 2px;
-
-		&::after {
-			display: block;
-			z-index: 1;
-		}
-	}
-
-	&.stateful-button--doing {
+stateful-button {
+	&.stateful-button--doing button {
 		background-color: grey !important;
-		color: transparent !important;
+		color: white !important;
 		box-shadow: none !important;
 		cursor: wait !important;
-		
-		&::after {
-			box-shadow: 0 1px 0 0 #fff;
-		}
 	}
 
-	&.stateful-button--success {
+	&.stateful-button--success button {
 		background-color: #2ECC40 !important;
-		color: transparent !important;
+		color: white !important;
 		box-shadow: none !important;
-
-		&::after {
-			content: '✓';
-			color: white;
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			display: block;
-			top: 0;
-			left: 0;
-			text-align: center;
-			line-height: 30px;
-		}
+		cursor: default !important;
 	}
 }

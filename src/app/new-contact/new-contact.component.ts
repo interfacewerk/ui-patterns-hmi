@@ -13,7 +13,7 @@ import {
 import { Router } from '@angular/router';
 import { ContactStore, UIContact } from '../store/contacts';
 import { ContactsService, EditableContactData } from '../contacts.service';
-import { ButtonState } from 'ng2-stateful-button'
+import { ButtonState, delay } from 'ng2-stateful-button'
 import { BirdService } from '../bird.service';
 
 @Component({
@@ -41,7 +41,7 @@ export class NewContactComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createButtonState = ButtonState.NEUTRAL;
+    this.createButtonState = ButtonState.IDLE;
   }
 
   get isFormDisabled(): boolean { return this.createButtonState === ButtonState.DOING; }
@@ -53,7 +53,7 @@ export class NewContactComponent implements OnInit {
 
     setTimeout(() => this.birdService.deliverTo(`contact-airport-${tmpId}`, this.createButton.nativeElement), 0);
 
-    this.contactsService.create(this.newContact)
+    delay(500).then(() => this.contactsService.create(this.newContact)
     .subscribe(
       c => {
         this.contactStore.finalizeContactCreation(tmpId, c);        
@@ -61,9 +61,9 @@ export class NewContactComponent implements OnInit {
       },
       () => {
         alert('ERROR');
-        this.createButtonState = ButtonState.NEUTRAL;
+        this.createButtonState = ButtonState.IDLE;
       }
-    );
+    ));
   }
 
 }

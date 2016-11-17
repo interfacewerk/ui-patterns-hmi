@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ButtonState } from 'ng2-stateful-button';
+import { ButtonState, delay } from 'ng2-stateful-button';
 
 @Component({
   selector: 'app-button-test',
@@ -15,16 +15,19 @@ export class ButtonTestComponent implements OnInit {
 
   doing: ButtonState = ButtonState.DOING;
   success: ButtonState = ButtonState.SUCCESS;
-  neutral: ButtonState = ButtonState.NEUTRAL;
-  dynamic: ButtonState = ButtonState.NEUTRAL;
+  idle: ButtonState = ButtonState.IDLE;
+  dynamic: ButtonState = ButtonState.IDLE;
+  disabled: boolean = false;
 
   clickMe() {
     this.dynamic = ButtonState.DOING;
-    setTimeout(() => {
-      this.dynamic = ButtonState.SUCCESS;
-      setTimeout(() => {
-        this.dynamic = ButtonState.NEUTRAL;
-      }, 2000);
-    }, 2000);
+    delay(2000)
+    .then(() => this.dynamic = ButtonState.SUCCESS)
+    .then(() => delay(2000))
+    .then(() => this.dynamic = ButtonState.IDLE);
+  }
+
+  onSubmit() {
+    this.clickMe();
   }
 }
