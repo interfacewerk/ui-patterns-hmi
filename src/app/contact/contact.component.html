@@ -2,8 +2,8 @@
 <div *ngIf="contact.isDeleted">
   <p class="notice">You deleted {{contact.name}}.</p>
   <stateful-button [buttonState]="restoreButtonState">
-    <button type="button" 
-    class="creative" 
+    <button type="button"
+    class="creative"
     (click)="restore()">
     <sb-label-idle>restore</sb-label-idle>
     <sb-label-doing>restoring</sb-label-doing>
@@ -11,6 +11,7 @@
     </button>
   </stateful-button>
 </div>
+<p *ngIf="updateError" class="notice warning">{{updateError}}</p>
 <app-contact-form
   *ngIf="isFormDisplayed"
   [model]="model"
@@ -25,7 +26,7 @@
         <sb-label-doing>Saving</sb-label-doing>
         <sb-label-success>Saved</sb-label-success>
       </button>
-      
+
     </stateful-button>
     <span *ngIf="!hasModifications">No changes</span>
     <span *ngIf="hasModifications && !contact.uiState.isUpdating">You have unsaved modifications</span>
@@ -41,4 +42,3 @@
     </span>
   </app-contact-form-footer>
 </app-contact-form>
-<span *ngIf="updateError">{{updateError}}</span>
