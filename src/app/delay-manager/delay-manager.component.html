@@ -1,0 +1,3 @@
+<select [(ngModel)]="selectedDelay" (ngModelChange)="onDelayChange()">
+  <option *ngFor="let delay of delays" [value]="delay.value">{{delay.text}}</option>
+</select>

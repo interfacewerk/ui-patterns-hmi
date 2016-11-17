@@ -22,6 +22,7 @@ import { AirportDirective } from './airport.directive'
 import { BirdService } from './bird.service';
 import { TestComponent } from './test/test.component';
 import { ButtonTestComponent } from './button-test/button-test.component';
+import { DelayManagerComponent } from './delay-manager/delay-manager.component';
 
 @Injectable()
 export class RemovePlaceholder implements Resolve<void> {
@@ -72,7 +73,8 @@ export class InitialResolve implements Resolve<void> {
     ExportButtonComponent,
     AirportDirective,
     TestComponent,
-    ButtonTestComponent
+    ButtonTestComponent,
+    DelayManagerComponent
   ],
   imports: [
     StatefulButtonModule,

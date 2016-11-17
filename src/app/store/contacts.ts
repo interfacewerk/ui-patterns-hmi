@@ -151,6 +151,10 @@ export class ContactStore {
     );
   }
 
+  setCreateContactDelay(delay: number) {
+    this.nextState(state => state.selectedCreateContactDelay = delay);
+  }
+
   getState(): AppState {
     return JSON.parse(JSON.stringify(this.state));
   }
@@ -159,7 +163,18 @@ export class ContactStore {
     this.state = {
       isInitializing: false,
       contacts: [],
-      groups: []
+      groups: [],
+      selectedCreateContactDelay: 1000, 
+      createContactDelays: [{
+        text: 'No delay',
+        value: 0,
+      }, {
+        text: 'Optimal delay',
+        value: 1000
+      }, {
+        text: 'Long delay',
+        value: 5000
+      }]
     };
     this._stateUpdate = new BehaviorSubject<void>(null);
     this.stateUpdate = this._stateUpdate.asObservable();
@@ -186,7 +201,9 @@ export class ContactStore {
 export type AppState = {
   isInitializing: boolean,
   contacts: Array<UIContact>,
-  groups: Array<Group>
+  groups: Array<Group>,
+  selectedCreateContactDelay: number,
+  createContactDelays: Array<{text: string, value: number}>;
 }
 
 export type UIContact = Contact & {

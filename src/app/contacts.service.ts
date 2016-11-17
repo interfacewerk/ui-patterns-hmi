@@ -47,7 +47,7 @@ export class ContactsService {
     };
     this.contacts.push(contact);
     this.save();
-    return delayedResponse<Contact>(contact, 2000);
+    return delayedResponse<Contact>(contact, 200);
   }
 
   update(id: number, data: EditableContactData): Observable<{error?: string, contact?: Contact}> {

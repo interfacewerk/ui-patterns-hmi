@@ -44,23 +44,28 @@ export class NewContactComponent implements OnInit {
     this.createButtonState = ButtonState.IDLE;
   }
 
-  get isFormDisabled(): boolean { return this.createButtonState === ButtonState.DOING; }
+  isFormDisabled: boolean = false;
 
   create() {
     this.createButtonState = ButtonState.DOING;
+    this.isFormDisabled = true;
+
+    let selectedDelay = this.contactStore.getState().selectedCreateContactDelay;
 
     let tmpId = this.contactStore.startContactCreation(this.newContact);
 
     setTimeout(() => this.birdService.deliverTo(`contact-airport-${tmpId}`, this.createButton.nativeElement), 0);
 
-    delay(500).then(() => this.contactsService.create(this.newContact)
+    delay(selectedDelay).then(() => this.contactsService.create(this.newContact)
     .subscribe(
-      c => {
-        this.contactStore.finalizeContactCreation(tmpId, c);        
-        this.router.navigate(['/home/contact', c.id]);
+      c => {    
+        this.contactStore.finalizeContactCreation(tmpId, c);
+        this.createButtonState = ButtonState.SUCCESS;
+        delay(1000).then(() => this.router.navigate(['/home/contact', c.id]));
       },
       () => {
         alert('ERROR');
+        this.isFormDisabled = true;
         this.createButtonState = ButtonState.IDLE;
       }
     ));
