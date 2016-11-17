@@ -41,6 +41,10 @@
             transform-origin: 0 0;
           }
 
+          &.modified {
+            color: #ff9b1c;
+          }
+
           &.saving, &.creating, &.restoring {
             color: #39CCCC;
           }

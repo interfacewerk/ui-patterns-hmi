@@ -16,7 +16,10 @@
     }">
     <a routerLink="/home/contact/{{contact.id}}" routerLinkActive="active">
       {{contact.name}}
-      <span class="unsaved" *ngIf="contact.uiState.updateError">(unsaved)</span>
+      <span class="unsaved" *ngIf="contact.uiState.updateError">(error)</span>
+      <span class="modified" 
+        *ngIf="contact.uiState.localModifications && !contact.uiState.updateError && !contact.uiState.isUpdating"
+      >(unsaved)</span>
       <span class="saving" *ngIf="contact.uiState.isUpdating">(saving …)</span>
       <span class="creating" *ngIf="contact.uiState.isBeingCreated">(creating …)</span>
       <span class="restoring" *ngIf="contact.uiState.isBeingUnremoved">(restoring …)</span>
