@@ -48,15 +48,6 @@ export class ContactComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.subscriptions.push(router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe((event: NavigationEnd) => {
-        this.isContentLoading = true;
-        setTimeout(()=> {
-          this.isContentLoading = false;
-        }, 2000);
-      }));
-
     this.activatedRoute.params.subscribe()
   }
 
@@ -105,7 +96,6 @@ export class ContactComponent implements OnInit, OnDestroy {
   contact: UIContact;
   model: EditableContactData;
   isFormValid: boolean;
-  isContentLoading: boolean;
   groups: Group[];
   isContactInGroup: {
     [groupId: string]: boolean;
