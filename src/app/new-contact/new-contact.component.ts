@@ -60,7 +60,7 @@ export class NewContactComponent implements OnInit {
 
     let tmpId = this.contactStore.startContactCreation(this.newContact);
 
-    setTimeout(() => this.birdService.deliverTo(`contact-airport-${tmpId}`, this.createButton.nativeElement), 0);
+    // setTimeout(() => this.birdService.deliverTo(`contact-airport-${tmpId}`, this.createButton.nativeElement), 0);
 
     delay(selectedDelay).then(() => this.contactsService.create(this.newContact)
     .subscribe(
@@ -87,7 +87,7 @@ export class NewContactComponent implements OnInit {
       .subscribe(c => {
         let tmpId = this.contactStore.startContactCreation(this.newContact);
         this.contactStore.finalizeContactCreation(tmpId, c);
-        this.router.navigate(['/home/contact', c.id]);
+        delay(1000).then(() => this.router.navigate(['/home/contact', c.id]))
       });
     });
   }
@@ -97,13 +97,13 @@ export class NewContactComponent implements OnInit {
     this.isFormDisabled = true;
 
     let tmpId = this.contactStore.startContactCreation(this.newContact);
-    
-    delay(0).then(() => this.birdService.deliverTo(
-      `contact-airport-${tmpId}`, 
-      this.createButton.nativeElement
-    ));
 
-    delay(2000).then(() => {
+    // delay(0).then(() => this.birdService.deliverTo(
+    //   `contact-airport-${tmpId}`,
+    //   this.createButton.nativeElement
+    // ));
+
+    delay(1000).then(() => {
       this.contactsService.create(this.newContact)
       .subscribe(c => {
         this.contactStore.finalizeContactCreation(tmpId, c);
@@ -111,20 +111,20 @@ export class NewContactComponent implements OnInit {
         delay(1000).then(() => this.router.navigate(['/home/contact', c.id]))
       });
     });
-    
-    
+
+
   }
 
   optimisticCreate() {
-    this.createButtonState = ButtonState.DOING;
-    this.isFormDisabled = true;
+    // this.createButtonState = ButtonState.DOING;
+    // this.isFormDisabled = true;
 
     let tmpId = this.contactStore.startContactCreation(this.newContact);
-    delay(0).then(() => this.birdService.deliverTo(
-      `contact-airport-${tmpId}`, 
-      this.createButton.nativeElement
-    ));
-    
+    // delay(0).then(() => this.birdService.deliverTo(
+    //   `contact-airport-${tmpId}`,
+    //   this.createButton.nativeElement
+    // ));
+
     this.contactsService.create(this.newContact)
       .subscribe(c => {
         this.contactStore.finalizeContactCreation(tmpId, c);
