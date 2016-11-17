@@ -41,7 +41,7 @@ export class InitialResolve implements Resolve<void> {
   resolve(): Promise<void> {
     this.contactStore.setIsInitializing(true);
     return new Promise<void>((resolve, reject) => {
-      Observable.timer(1)
+      Observable.timer(3000)
       .zip(this.contactsService.listContacts(), this.contactsService.listGroups())
       .subscribe(
         result => {
