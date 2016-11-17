@@ -78,6 +78,17 @@
     margin: 10px 10px 10px 0;
     width: 50px;
   }
+
+  .interfacewerk{
+    position: absolute;
+    bottom: 10px;
+    left: -10px;
+    width: 270px;
+    height: 80px;
+    background-image: url('/assets/interfacewerk.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
 }
 
 @keyframes bounce {
