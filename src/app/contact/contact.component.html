@@ -1,6 +1,6 @@
 
 <div *ngIf="contact.isDeleted">
-  <p class="notice">You deleted {{contact.name}}.</p>
+  <p class="notice">Sie haben {{contact.name}} gelöscht.</p>
   <stateful-button [buttonState]="restoreButtonState">
     <button type="button"
     class="creative"
@@ -29,7 +29,7 @@
 
     </stateful-button>
     <span *ngIf="!hasModifications">No changes</span>
-    <span *ngIf="hasModifications && !contact.uiState.isUpdating">You have unsaved modifications</span>
+    <span *ngIf="hasModifications && !contact.uiState.isUpdating">Ungespeicherte Änderungen vorhanden.</span>
     <span *ngIf="!contact.isDeleted">
       <!--<button type="button" class="utility" (click)="export($event)">Export</button>-->
       <stateful-button [buttonState]="deleteButtonState">

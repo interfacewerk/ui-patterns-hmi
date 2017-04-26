@@ -17,6 +17,8 @@ import { ContactFormComponent, ContactFormFooter, ContactFormHeader } from './co
 import { ExportButtonComponent } from './export-button/export-button.component';
 import { ExportService } from './export.service';
 import { StatefulButtonModule } from 'ng2-stateful-button'
+import { Draggable } from './draggable'
+import { NumpadComponent } from './numpad/numpad.component'
 import { Observable } from 'rxjs/Rx';
 import { AirportDirective } from './airport.directive'
 import { BirdService } from './bird.service';
@@ -68,6 +70,8 @@ export class InitialResolve implements Resolve<void> {
     ContactComponent,
     HomeComponent,
     ContactFormComponent,
+    NumpadComponent,
+    Draggable,
     ContactFormHeader,
     ContactFormFooter,
     ExportButtonComponent,

@@ -17,6 +17,7 @@ import { EditableContactData } from '../contacts.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
+
 @Component({
   selector: 'app-contact-form',
   templateUrl: './contact-form.component.html',
@@ -31,7 +32,6 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() onValid = new EventEmitter<boolean>();
   @Output() onSubmit = new EventEmitter<EditableContactData>();
   @ViewChild(NgForm) contactForm: NgForm;
-  @ViewChild('myCanvas') myCanvas: CanvasRenderingContext2D;
 
   constructor(private renderer: Renderer, private element: ElementRef) {
 

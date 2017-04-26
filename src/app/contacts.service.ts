@@ -52,7 +52,7 @@ export class ContactsService {
 
   update(id: number, data: EditableContactData): Observable<{error?: string, contact?: Contact}> {
     if (this.altKey) {
-      return delayedResponse({error: 'This machine job could not be saved. Try again.'}, 2000);
+      return delayedResponse({error: 'Dieser CNC Job konnte nicht auf der Maschine gespeichert werden. Bitte nocheinmal versuchen.'}, 2000);
     }
 
     let found: Contact;

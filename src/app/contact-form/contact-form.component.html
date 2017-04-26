@@ -15,7 +15,7 @@
         id="name"
         class="h1"
         name="name"
-        placeholder="e.g. Milling Car Wing ab12"
+        placeholder="z.B. Milling Car Wing ab12"
         required
         [(ngModel)]="model.name"
         (ngModelChange)="$onChange()"
@@ -35,8 +35,8 @@
 
         <textarea type="text"
           name="email"
-          placeholder="e.g. L X+100 Y+100 R0 FMAX"
-          rows="15"
+          placeholder="z.B. L X+100 Y+100 R0 FMAX"
+          rows="8"
           [(ngModel)]="model.email"
           (ngModelChange)="$onChange()"
           [disabled]="formDisabled"></textarea>
@@ -45,13 +45,19 @@
     </div>
 
     <div>
-      <label for="phone">Anzahl der Objektrotationen</label>
-      <input type="text"
-        name="phone"
-        placeholder="e.g. 48"
-        [(ngModel)]="model.phone"
-        (ngModelChange)="$onChange()"
-        [disabled]="formDisabled"/>
+      <label for="phone">Plattenhöhe in mm</label>
+      <div class="row">
+        <input #phone type="number"
+          name="phone"
+          placeholder="z.B. 48"
+          min="2"
+          max="40"
+          [(ngModel)]="model.phone"
+          (ngModelChange)="$onChange()"
+          [disabled]="formDisabled"/>
+        <span>Min: 2mm, Max: 40mm:</span><div class="plate" [style.height.px]=model.phone></div>
+      </div>
+        <numpad [hidden]="!showNumpad && true"></numpad>
     </div>
   </div>
 
