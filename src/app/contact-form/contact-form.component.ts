@@ -16,8 +16,6 @@ import { NgForm } from '@angular/forms';
 import { EditableContactData } from '../contacts.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
-import { ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-contact-form',
@@ -35,18 +33,16 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(NgForm) contactForm: NgForm;
   @ViewChild('myCanvas') myCanvas: CanvasRenderingContext2D;
 
-  constructor(private renderer: Renderer, private element: ElementRef, private router: Router,
-        private activatedRoute: ActivatedRoute) {
+  constructor(private renderer: Renderer, private element: ElementRef) {
 
-    this.watchContactChanges = this.router.events.subscribe((a)=>{
-      this.checkForGraph();
-    });
+
   }
 
   watchContactChanges: Subscription;
   ngAfterViewInit() {
     this.valueChanges = this.contactForm.valueChanges.subscribe(() => {
       this.onValid.emit(this.contactForm.valid);
+      this.checkForGraph();
     });
 
     function Graph(config) {
