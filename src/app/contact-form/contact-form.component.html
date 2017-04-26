@@ -9,13 +9,13 @@
 
   <div class="form-inputs">
     <div>
-      <label for="name">Full Name</label>
+      <label for="name">Job Name</label>
       <input type="text"
         autocomplete="off"
         id="name"
         class="h1"
         name="name"
-        placeholder="e.g. Mad Hatter"
+        placeholder="e.g. Milling Car Wing ab12"
         required
         [(ngModel)]="model.name"
         (ngModelChange)="$onChange()"
@@ -29,25 +29,29 @@
       </div>
     </div>
 
-    <div class="row">
-      <div>
-        <label for="email">Email</label>
-        <input type="email"
+    <div>
+      <label for="email">G-Code/Heidenhain</label>
+      <div class="row">
+
+        <textarea type="text"
           name="email"
-          placeholder="e.g. mad.hatter@wonderland.biz"
+          placeholder="e.g. L X+100 Y+100 R0 FMAX"
+          rows="15"
           [(ngModel)]="model.email"
           (ngModelChange)="$onChange()"
-          [disabled]="formDisabled"/>
-      </div>
-      <div>
-        <label for="phone">Phone</label>
-        <input type="text"
-          name="phone"
-          placeholder="e.g. +49 89 2154 3924"
-          [(ngModel)]="model.phone"
-          (ngModelChange)="$onChange()"
-          [disabled]="formDisabled"/>
-      </div>
+          [disabled]="formDisabled"></textarea>
+          <canvas id="myCanvas" [hidden]="!showGraph"></canvas>
+        </div>
+    </div>
+
+    <div>
+      <label for="phone">Anzahl der Objektrotationen</label>
+      <input type="text"
+        name="phone"
+        placeholder="e.g. 48"
+        [(ngModel)]="model.phone"
+        (ngModelChange)="$onChange()"
+        [disabled]="formDisabled"/>
     </div>
   </div>
 

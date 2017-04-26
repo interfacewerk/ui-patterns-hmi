@@ -1,6 +1,6 @@
-<h1>Contacts <button class="creative" routerLink="/home/new">new</button></h1>
+<h1>Machine Jobs <button class="creative" routerLink="/home/new">new</button></h1>
 
-<p *ngIf="noContact">No contacts yet! Add some!</p>
+<p *ngIf="noContact">No jobs yet! Add some!</p>
 
 <ul *ngIf="!noContact">
   <li
@@ -16,14 +16,14 @@
     }">
     <a routerLink="/home/contact/{{contact.id}}" routerLinkActive="active">
       {{contact.name}}
-      <span class="unsaved" *ngIf="contact.uiState.updateError">(unsaved)</span>
+      <span class="unsaved" *ngIf="contact.uiState.updateError">(ungespeichert)</span>
       <span class="modified"
         *ngIf="contact.uiState.localModifications && !contact.uiState.updateError && !contact.uiState.isUpdating"
-      >(unsaved)</span>
-      <span class="saving" *ngIf="contact.uiState.isUpdating">(saving …)</span>
-      <span class="creating" *ngIf="contact.uiState.isBeingCreated">(creating …)</span>
-      <span class="restoring" *ngIf="contact.uiState.isBeingUnremoved">(restoring …)</span>
-      <span class="deleting" *ngIf="contact.uiState.isBeingRemoved">(deleting …)</span>
+      >(ungespeichert)</span>
+      <span class="saving" *ngIf="contact.uiState.isUpdating">(speichere …)</span>
+      <span class="creating" *ngIf="contact.uiState.isBeingCreated">(erstelle …)</span>
+      <span class="restoring" *ngIf="contact.uiState.isBeingUnremoved">(stelle wieder her …)</span>
+      <span class="deleting" *ngIf="contact.uiState.isBeingRemoved">(lösche …)</span>
     </a>
   </li>
 </ul>

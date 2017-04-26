@@ -130,6 +130,30 @@ a:hover {
   flex-direction: row;
   height: 100%;
 
+  .apps{
+    flex: 1 1 20%;
+    background: #ddd;
+    padding: 0;
+    overflow: auto;
+    z-index: 2;
+    position: relative;
+    ul{
+      margin-top: 64px;
+      li{
+        list-style-type: none;
+        display: block;
+        background-color: #aaa;
+        width: 80%;
+        height: 100px;
+        margin: 20px 10%;
+
+        &.active{
+          background-color: white;
+        }
+      }
+    }
+  }
+
   aside {
     flex: 1 1 30%;
     background: #eee;

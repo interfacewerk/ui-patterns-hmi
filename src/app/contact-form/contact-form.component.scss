@@ -12,7 +12,7 @@
     }
   }
 
-  input {
+  input,textarea {
     font-weight: bold;
     border-bottom: 2px solid #ccc;
     padding: 0 0 2px 0;
@@ -31,6 +31,18 @@
     &:focus {
       border-color: #39CCCC;
     }
+  }
+
+  textarea{
+    width: calc(50% - 3rem - 20px);
+    background-color: #eee;
+    line-height: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  #myCanvas{
+    width: calc(50% - 20px);
+    height: calc(50% - 20px);
   }
 
   .row {

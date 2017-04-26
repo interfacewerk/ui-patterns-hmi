@@ -5,9 +5,9 @@
     <button type="button"
     class="creative"
     (click)="restore()">
-    <sb-label-idle>restore</sb-label-idle>
-    <sb-label-doing>restoring</sb-label-doing>
-    <sb-label-success>restored</sb-label-success>
+    <sb-label-idle>Wiederherstellen</sb-label-idle>
+    <sb-label-doing>In Bearbeitung</sb-label-doing>
+    <sb-label-success>Wiederhergestellt</sb-label-success>
     </button>
   </stateful-button>
 </div>
@@ -21,10 +21,10 @@
   <app-contact-form-footer>
     <stateful-button *ngIf="!contact.isDeleted" [buttonState]="saveButtonState">
       <button type="submit" [disabled]="!isFormValid || contact.uiState.isUpdating || !hasModifications">
-        <sb-label-idle>Save</sb-label-idle>
-        <sb-label-doing>Saving</sb-label-doing>
-        <sb-label-success>Saved</sb-label-success>
-        <sb-label-failure>Save failed!</sb-label-failure>
+        <sb-label-idle>Speichern</sb-label-idle>
+        <sb-label-doing>Wird gespeichert</sb-label-doing>
+        <sb-label-success>Gespeichert!</sb-label-success>
+        <sb-label-failure>Fehlgeschlagen!</sb-label-failure>
       </button>
 
     </stateful-button>
@@ -34,9 +34,9 @@
       <!--<button type="button" class="utility" (click)="export($event)">Export</button>-->
       <stateful-button [buttonState]="deleteButtonState">
         <button type="button" class="destructive" (click)="delete()">
-          <sb-label-idle>Delete</sb-label-idle>
-          <sb-label-doing>Deleting</sb-label-doing>
-          <sb-label-success>Deleted</sb-label-success>
+          <sb-label-idle>Löschen</sb-label-idle>
+          <sb-label-doing>Wird gelöscht</sb-label-doing>
+          <sb-label-success>Gelöscht</sb-label-success>
         </button>
       </stateful-button>
     </span>

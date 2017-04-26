@@ -11,6 +11,32 @@
     z-index: 2;
   }
 
+  .apps{
+    flex: 1 1 20%;
+    background: #ddd;
+    padding: 0;
+    overflow: auto;
+    z-index: 2;
+    position: relative;
+    ul{
+      margin-top: 64px;
+      li{
+        list-style-type: none;
+        display: block;
+        background-color: #aaa;
+        width: 80%;
+        height: 100px;
+        margin: 20px 10%;
+
+        &.active{
+          background-color: #eee;
+          width: 90%;
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
   main {
     flex: 1 1 70%;
     padding: 1rem;
