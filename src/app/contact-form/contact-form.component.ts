@@ -38,6 +38,10 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  updateDataFromNumpad($event){
+    this.model.phone=$event;
+  }
+
   watchContactChanges: Subscription;
   ngAfterViewInit() {
     this.valueChanges = this.contactForm.valueChanges.subscribe(() => {

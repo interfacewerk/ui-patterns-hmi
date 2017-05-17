@@ -50,9 +50,20 @@
     width: calc(50% + 3rem - 20px);
   }
   .plate{
-    width: 30px;
+    // width: calc(100% - 20px - 3rem);
+    margin-right: 20px;
     height: 1px;
-    background-color: black;
+    background-color: gray;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.5) 10px, rgba(255,255,255,.5) 20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .drilling{
+    background-color: white;
+    width: 30px;
+    align-self: flex-start;
   }
 
   .numpad {

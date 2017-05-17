@@ -1,20 +1,38 @@
 
-<div class="" draggable>
-  <ul class="numpad">
-    <li rel="min">Min</li>
-    <li rel="min">Max</li>
-    <li rel="none"></li>
-    <li rel="1">1</li>
-    <li rel="2">2</li>
-    <li rel="3">3</li>
-    <li rel="4">4</li>
-    <li rel="5">5</li>
-    <li rel="6">6</li>
-    <li rel="7">7</li>
-    <li rel="8">8</li>
-    <li rel="9">9</li>
-    <li rel=".">.</li>
-    <li rel="0">0</li>
-    <li rel="delete">⌫</li>
-  </ul>
+<div class="conti" draggable>
+    <div class="row top">
+      <div class="column">
+        <div class="name">Plattenhöhe</div>
+        <div class="value">{{displayValue}}mm</div>
+      </div>
+      <button (click)="pushIt();" class="pad check" [class.good]="statusGood" rel="min"></button>
+    </div>
+<!--     <div class="row">
+      <span class="min">2mm</span>
+      <span class="max">40mm</span>
+    </div> -->
+    <div class="row">
+      <button (click)="setMin();" class="pad big dark" rel="min">Min</button>
+      <button (click)="setMax();" class="pad big dark" rel="max">Max</button>
+    </div>
+    <div class="row">
+      <button (click)="addDigit('7');" class="pad" rel="7">7</button>
+      <button (click)="addDigit('8');" class="pad" rel="8">8</button>
+      <button (click)="addDigit('9');" class="pad" rel="9">9</button>
+    </div>
+    <div class="row">
+      <button (click)="addDigit('4');" class="pad" rel="4">4</button>
+      <button (click)="addDigit('5');" class="pad" rel="5">5</button>
+      <button (click)="addDigit('6');" class="pad" rel="6">6</button>
+    </div>
+    <div class="row">
+      <button (click)="addDigit('1');" class="pad" rel="1">1</button>
+      <button (click)="addDigit('2');" class="pad" rel="2">2</button>
+      <button (click)="addDigit('3');" class="pad" rel="3">3</button>
+    </div>
+    <div class="row">
+      <button (click)="addDigit(',');" class="pad" rel=",">,</button>
+      <button (click)="addDigit('0');" class="pad" rel="0">0</button>
+      <button (click)="deleteDigit();" class="pad dark" rel="delete">⌫</button>
+    </div>
 </div>

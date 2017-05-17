@@ -172,6 +172,7 @@ export type EditableContactData = {
   name?: string,
   email?: string,
   phone?: string
+  drilling?:string
 }
 
 export type Group = {

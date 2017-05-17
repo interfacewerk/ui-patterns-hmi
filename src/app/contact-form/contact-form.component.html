@@ -1,65 +1,81 @@
 <form #contactForm="ngForm" novalidate (ngSubmit)="$onSubmit()">
   <ng-content select="app-contact-form-header"></ng-content>
-
   <div *ngIf="name.errors && (name.dirty || name.touched)" class="error_notice">
     <div [hidden]="!name.errors.required">
       You can’t save a contact like this!
     </div>
   </div>
-
   <div class="form-inputs">
     <div>
       <label for="name">Job Name</label>
       <input type="text"
-        autocomplete="off"
-        id="name"
-        class="h1"
-        name="name"
-        placeholder="z.B. Milling Car Wing ab12"
-        required
-        [(ngModel)]="model.name"
-        (ngModelChange)="$onChange()"
-        [disabled]="formDisabled"
-        #name="ngModel" />
-
+      autocomplete="off"
+      id="name"
+      class="h1"
+      name="name"
+      placeholder="z.B. Milling Car Wing ab12"
+      required
+      [(ngModel)]="model.name"
+      (ngModelChange)="$onChange()"
+      [disabled]="formDisabled"
+      #name="ngModel" />
       <div *ngIf="name.errors && (name.dirty || name.touched)" class="error_message">
         <div [hidden]="!name.errors.required">
           Please enter a name
         </div>
       </div>
     </div>
-
     <div>
       <label for="email">G-Code/Heidenhain</label>
       <div class="row">
-
         <textarea type="text"
-          name="email"
-          placeholder="z.B. L X+100 Y+100 R0 FMAX"
-          rows="8"
-          [(ngModel)]="model.email"
-          (ngModelChange)="$onChange()"
-          [disabled]="formDisabled"></textarea>
-          <canvas id="myCanvas" [hidden]="!showGraph"></canvas>
-        </div>
+        name="email"
+        placeholder="z.B. L X+100 Y+100 R0 FMAX"
+        rows="8"
+        [(ngModel)]="model.email"
+        (ngModelChange)="$onChange()"
+        [disabled]="formDisabled"></textarea>
+        <canvas id="myCanvas" [hidden]="!showGraph"></canvas>
+      </div>
     </div>
-
     <div>
       <label for="phone">Plattenhöhe in mm</label>
       <div class="row">
         <input #phone type="number"
-          name="phone"
-          placeholder="z.B. 48"
-          min="2"
-          max="40"
-          [(ngModel)]="model.phone"
-          (ngModelChange)="$onChange()"
-          [disabled]="formDisabled"/>
-        <span>Min: 2mm, Max: 40mm:</span><div class="plate" [style.height.px]=model.phone></div>
+        name="phone"
+        placeholder="z.B. 48"
+        min="30"
+        max="80"
+        [(ngModel)]="model.phone"
+        (ngModelChange)="$onChange()"
+        [disabled]="formDisabled"/>
+        <span>Min: 30mm, Max: 80mm:</span>
       </div>
-        <numpad [hidden]="!showNumpad && true"></numpad>
+    </div>
+    <div>
+      <label for="phone">Bohrung in mm</label>
+      <div class="row">
+        <input #drilling type="number"
+        name="drilling"
+        placeholder="z.B. 4"
+        min="0"
+        [max]="model.phone"
+        [(ngModel)]="model.drilling"
+        (ngModelChange)="$onChange()"
+        [disabled]="formDisabled"/>
+        <span>Min: 0mm, Max: {{model.phone}}mm</span>
+      </div>
+    </div>
+    <div>
+      <label for="phone">Vorschau</label>
+      <div class="row">
+        <div class="plate" [style.height.px]=model.phone>
+          <div class="drilling" [style.height.px]=model.drilling></div>
+        </div>
+      </div>
     </div>
   </div>
-
   <ng-content select="app-contact-form-footer"></ng-content>
 </form>
+<numpad [startData]="model.phone" (dataChanged)=updateDataFromNumpad($event)></numpad>
+

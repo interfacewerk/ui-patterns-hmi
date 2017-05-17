@@ -28,7 +28,7 @@
       </button>
 
     </stateful-button>
-    <span *ngIf="!hasModifications">No changes</span>
+    <span *ngIf="!hasModifications">Keine Änderungen vorhanden.</span>
     <span *ngIf="hasModifications && !contact.uiState.isUpdating">Ungespeicherte Änderungen vorhanden.</span>
     <span *ngIf="!contact.isDeleted">
       <!--<button type="button" class="utility" (click)="export($event)">Export</button>-->
