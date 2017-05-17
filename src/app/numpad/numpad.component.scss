@@ -2,8 +2,10 @@
 
 :host {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 50px;
+  right: 20px;
+  box-shadow: 0px 0px 499px black;
+  z-index: 9999;
   .conti{
     display: flex;
     flex-direction: column;

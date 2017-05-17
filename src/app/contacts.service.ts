@@ -43,6 +43,7 @@ export class ContactsService {
       name: data.name,
       phone: data.phone,
       email: data.email,
+      drilling: data.drilling,
       isDeleted: false
     };
     this.contacts.push(contact);
@@ -62,6 +63,7 @@ export class ContactsService {
       c.email = data.email;
       c.name = data.name;
       c.phone = data.phone;
+      c.drilling = data.drilling;
       found = c;
       return true;
     });
@@ -165,6 +167,7 @@ export type Contact = {
   name: string,
   email: string,
   phone: string,
+  drilling?:string
   isDeleted: boolean
 }
 

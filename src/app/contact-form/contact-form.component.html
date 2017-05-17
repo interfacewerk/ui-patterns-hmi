@@ -48,7 +48,9 @@
         max="80"
         [(ngModel)]="model.phone"
         (ngModelChange)="$onChange()"
-        [disabled]="formDisabled"/>
+        [disabled]="formDisabled"
+        [class.touchinputactive]="showNumpad"
+        />
         <span>Min: 30mm, Max: 80mm:</span>
       </div>
     </div>
@@ -62,7 +64,8 @@
         [max]="model.phone"
         [(ngModel)]="model.drilling"
         (ngModelChange)="$onChange()"
-        [disabled]="formDisabled"/>
+        [disabled]="formDisabled"
+        />
         <span>Min: 0mm, Max: {{model.phone}}mm</span>
       </div>
     </div>
@@ -77,5 +80,5 @@
   </div>
   <ng-content select="app-contact-form-footer"></ng-content>
 </form>
-<numpad [startData]="model.phone" (dataChanged)=updateDataFromNumpad($event)></numpad>
+<numpad [startData]="model.phone" (dataChanged)=updateDataFromNumpad($event) [hidden]="!showNumpad"></numpad>
 

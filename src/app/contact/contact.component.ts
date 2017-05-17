@@ -68,7 +68,8 @@ export class ContactComponent implements OnInit, OnDestroy {
         this.model = this.contact.uiState.localModifications || {
           email: this.contact.email,
           name: this.contact.name,
-          phone: this.contact.phone
+          phone: this.contact.phone,
+          drilling: this.contact.drilling
         };
 
         this.updateError = this.contact.uiState.updateError;
@@ -144,15 +145,15 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.contactStore.startUpdateContactData(contactId, this.model);
     delay(500).then(() => {
       let request = this.contactsService.update(contactId, this.model).share();
-      
+
       request
         .filter(c => !!c.error)
         .subscribe(c => this.contactStore.finalizeUpdateContactDataWithError(contactId, c.error));
-      
+
       request
         .filter(c => !c.error)
         .subscribe(c => this.contactStore.finalizeUpdateContactData(contactId, c.contact));
-      
+
       this.contactSubscriptions.push(
         request
           .filter(c => !!c.error)
@@ -186,14 +187,14 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   restore() {
     this.restoreButtonState = ButtonState.DOING;
-    let contactId = this.contact.id;    
+    let contactId = this.contact.id;
     this.contactStore.startContactUndoDeletion(contactId);
     delay(500).then(() => {
       let request = this.contactsService.undoRemove(contactId);
-      
+
       request
         .subscribe(() => this.contactStore.finalizeContactUndoDeletion(contactId));
-      
+
       this.contactSubscriptions.push(
         request.subscribe(() => this.restoreButtonState = ButtonState.IDLE)
       );

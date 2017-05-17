@@ -15,10 +15,11 @@
   input,textarea {
     font-weight: bold;
     border-bottom: 2px solid #ccc;
-    padding: 0 0 2px 0;
+    padding: 4px 0 4px 4px;
     font-family: Lato, Helvetica, Arial, sans-serif;
     width: calc(100% - 20px);
     margin: 0 20px 0 0;
+    background-color: #eee;
 
     &#name {
       font-size: 2rem;
@@ -31,13 +32,17 @@
     &:focus {
       border-color: #39CCCC;
     }
+
+    &.touchinputactive{
+      border-color: #39CCCC;
+      background-color: #777;
+    }
   }
 
   textarea{
     width: calc(50% - 3rem - 20px);
-    background-color: #eee;
     line-height: 1.5rem;
-    padding: 1.5rem;
+    padding: 4px 0 4px 4px;
   }
 
 

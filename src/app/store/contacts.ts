@@ -41,9 +41,10 @@ export class ContactStore {
       contact.email = data.email;
       contact.name = data.name;
       contact.phone = data.phone;
+      contact.drilling = data.drilling;
     }, state));
   }
-  
+
   finalizeUpdateContactDataWithError(id: number, error: string) {
     this.nextState(state => findContactByIdAndDo(id, contact => {
       contact.uiState.isUpdating = false;
@@ -54,7 +55,7 @@ export class ContactStore {
   setIsInitializing(v: boolean) {
     this.nextState(state => state.isInitializing = v);
   }
-  
+
   setContactsAndGroups(contacts: Contact[], groups: Group[]) {
     this.nextState(state => {
       state.groups = groups;
@@ -65,6 +66,7 @@ export class ContactStore {
           isDeleted: c.isDeleted,
           name: c.name,
           phone: c.phone,
+          drilling: c.drilling,
           uiState: {
             isBeingCreated: false,
             isBeingRemoved: false,
@@ -102,7 +104,7 @@ export class ContactStore {
     this.nextState(state => {
       findContactByIdAndDo(id, (c, idx) => {
         c.isDeleted = true;
-        c.uiState.isBeingRemoved = false;      
+        c.uiState.isBeingRemoved = false;
       }, state);
       state.groups = groups;
     });
@@ -116,6 +118,7 @@ export class ContactStore {
         email: contact.email,
         name: contact.name,
         phone: contact.phone,
+        drilling: contact.drilling,
         isDeleted: false,
         uiState: {
           isBeingCreated: true,
@@ -131,13 +134,14 @@ export class ContactStore {
   }
 
   finalizeContactCreation(tmpId: number, contact: Contact) {
-    this.nextState(state => 
+    this.nextState(state =>
       findContactByIdAndDo(tmpId, (c, idx) => {
         state.contacts[idx] = {
           id: contact.id,
           email: contact.email,
           name: contact.name,
           phone: contact.phone,
+          drilling: contact.drilling,
           isDeleted: contact.isDeleted,
           uiState: {
             isBeingCreated: false,
@@ -164,7 +168,7 @@ export class ContactStore {
       isInitializing: false,
       contacts: [],
       groups: [],
-      selectedCreateContactDelay: 1000, 
+      selectedCreateContactDelay: 1000,
       createContactDelays: [{
         text: 'No delay',
         value: 0,

@@ -10,7 +10,8 @@ import {
   ViewChild,
   ElementRef,
   Renderer,
-  HostBinding
+  HostBinding,
+  HostListener
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { EditableContactData } from '../contacts.service';
@@ -37,9 +38,18 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   }
+  private showNumpad:boolean = false;
 
   updateDataFromNumpad($event){
     this.model.phone=$event;
+    this.showNumpad = false;
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  displayModal($event: KeyboardEvent) {
+    if ($event.key === 'n' && $event.ctrlKey) {
+      this.showNumpad = true;
+    }
   }
 
   watchContactChanges: Subscription;

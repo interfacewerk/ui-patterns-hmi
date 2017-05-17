@@ -27,7 +27,8 @@ export class NewContactComponent implements OnInit {
   newContact: EditableContactData = {
     email: '',
     name: '',
-    phone: ''
+    phone: '',
+    drilling: ''
   };
   isFormValid: boolean;
   createButtonState: ButtonState;

@@ -40,7 +40,7 @@ export class NumpadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
   set startData(value) {
-    this.displayValue = value.toString();
+    this.displayValue = value? value.toString() : '30';
     this.validateValue();
   }
 
