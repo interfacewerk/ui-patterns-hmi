@@ -2,7 +2,7 @@
   <ng-content select="app-contact-form-header"></ng-content>
   <div *ngIf="name.errors && (name.dirty || name.touched)" class="error_notice">
     <div [hidden]="!name.errors.required">
-      You can’t save a contact like this!
+      Der CNC Job kann so nicht gespeichert werden.
     </div>
   </div>
   <div class="form-inputs">
@@ -21,7 +21,7 @@
       #name="ngModel" />
       <div *ngIf="name.errors && (name.dirty || name.touched)" class="error_message">
         <div [hidden]="!name.errors.required">
-          Please enter a name
+          Bitte einen Job Namen eingeben.
         </div>
       </div>
     </div>

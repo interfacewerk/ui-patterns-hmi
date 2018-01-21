@@ -4,7 +4,6 @@
   position: absolute;
   top: 50px;
   right: 20px;
-  box-shadow: 0px 0px 499px black;
   z-index: 9999;
   .conti{
     display: flex;
@@ -15,6 +14,7 @@
     padding: 10px;
     border-radius: 5px;
     border: 4px solid #444;
+    box-shadow: 0px 0px 499px black;
     .row {
       display: flex;
       flex-direction: row;
