@@ -1,31 +1,40 @@
-# UiPatternsHMI
+# Ng App Seed
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.19-3.
+This project is a seed for any of our Angular applications. With it, you should be able to get up and running real fast:
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* start developing with a local server
+* run the unit tests
+* deploy to Heroku
+* setup CircleCI
 
-## Code scaffolding
+Make sure to use the correct node version (we recommend nvm to mange the node versions). Development with docker is possible, but in more complex projects which require multiple services, docker becomes necessary.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class`.
+## Clone
 
-## Build
+```
+git clone --depth=1 git@github.com:interfacewerk/ng-app-seed.git my-app
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+## Docker
 
-## Running unit tests
+Docker is one of the main blocks of our development setup.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Start a local server
 
-## Running end-to-end tests
+Watches your changes, bundle and serve the app:
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+```
+docker-compose up
+```
 
-## Deploying to Github Pages
+[Check this out](http://localhost:4200)
 
-Run `ng github-pages:deploy` to deploy to Github Pages.
+## Start unit tests
 
-## Further help
+Watches your changes and execute unit tests on the fly:
 
-To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```
+docker-compose -f docker-compose.test.yml up
+```
+
+[Check this out](http://localhost:9876)

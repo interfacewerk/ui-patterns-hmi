@@ -1,30 +1,31 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
-import { NgModule, Injectable } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RouterModule, Resolve }   from '@angular/router';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Resolve, RouterModule } from '@angular/router';
+import { StatefulButtonModule } from 'ng2-stateful-button';
+import { timer } from 'rxjs';
+import { zip } from 'rxjs/operators';
+import { AirportDirective } from './airport.directive';
 import { AppComponent } from './app.component';
-import { ContactStore } from './store/contacts';
+import { BirdService } from './bird.service';
+import { ButtonTestComponent } from './button-test/button-test.component';
+import { ContactFormComponent, ContactFormFooterDirective, ContactFormHeaderDirective } from './contact-form/contact-form.component';
+import { ContactComponent } from './contact/contact.component';
 import { ContactsService } from './contacts.service';
 import { ContactsComponent } from './contacts/contacts.component';
-import { NoContactSelectedComponent } from './no-contact-selected/no-contact-selected.component';
-import { NewContactComponent } from './new-contact/new-contact.component';
-import { ContactComponent } from './contact/contact.component';
-import { HomeComponent } from './home/home.component';
-import { ContactFormComponent, ContactFormFooter, ContactFormHeader } from './contact-form/contact-form.component';
+import { DelayManagerComponent } from './delay-manager/delay-manager.component';
+import { Draggable } from './draggable';
 import { ExportButtonComponent } from './export-button/export-button.component';
 import { ExportService } from './export.service';
-import { StatefulButtonModule } from 'ng2-stateful-button'
-import { Draggable } from './draggable'
-import { NumpadComponent } from './numpad/numpad.component'
-import { Observable } from 'rxjs/Rx';
-import { AirportDirective } from './airport.directive'
-import { BirdService } from './bird.service';
+import { HomeComponent } from './home/home.component';
+import { NewContactComponent } from './new-contact/new-contact.component';
+import { NoContactSelectedComponent } from './no-contact-selected/no-contact-selected.component';
+import { NumpadComponent } from './numpad/numpad.component';
+import { ContactStore } from './store/contacts';
 import { TestComponent } from './test/test.component';
-import { ButtonTestComponent } from './button-test/button-test.component';
-import { DelayManagerComponent } from './delay-manager/delay-manager.component';
+
 
 @Injectable()
 export class RemovePlaceholder implements Resolve<void> {
@@ -38,25 +39,27 @@ export class RemovePlaceholder implements Resolve<void> {
 
 @Injectable()
 export class InitialResolve implements Resolve<void> {
-  constructor(private contactsService: ContactsService, private contactStore: ContactStore) {}
+  constructor(private contactsService: ContactsService, private contactStore: ContactStore) { }
 
   resolve(): Promise<void> {
     this.contactStore.setIsInitializing(true);
     return new Promise<void>((resolve, reject) => {
-      Observable.timer(3000)
-      .zip(this.contactsService.listContacts(), this.contactsService.listGroups())
-      .subscribe(
-        result => {
-          this.contactStore.setContactsAndGroups(result[1], result[2]);
-          this.contactStore.setIsInitializing(false);
-          resolve();
-          document.getElementById('loading-app-placeholder').remove();
-        },
-        () => {
-          this.contactStore.setIsInitializing(false);
-          reject();
-        }
-      );
+      timer(3000)
+        .pipe(
+          zip(this.contactsService.listContacts(), this.contactsService.listGroups())
+        )
+        .subscribe(
+          result => {
+            this.contactStore.setContactsAndGroups(result[1], result[2]);
+            this.contactStore.setIsInitializing(false);
+            resolve();
+            document.getElementById('loading-app-placeholder').remove();
+          },
+          () => {
+            this.contactStore.setIsInitializing(false);
+            reject();
+          }
+        );
     });
   }
 }
@@ -72,8 +75,8 @@ export class InitialResolve implements Resolve<void> {
     ContactFormComponent,
     NumpadComponent,
     Draggable,
-    ContactFormHeader,
-    ContactFormFooter,
+    ContactFormHeaderDirective,
+    ContactFormFooterDirective,
     ExportButtonComponent,
     AirportDirective,
     TestComponent,
@@ -85,6 +88,7 @@ export class InitialResolve implements Resolve<void> {
     BrowserModule,
     FormsModule,
     HttpModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       {
         path: '',
@@ -121,11 +125,11 @@ export class InitialResolve implements Resolve<void> {
       }
     ])
   ],
-  providers: [ ContactStore, ContactsService, InitialResolve, ExportService, BirdService, RemovePlaceholder ],
+  providers: [ContactStore, ContactsService, InitialResolve, ExportService, BirdService, RemovePlaceholder],
   bootstrap: [AppComponent]
 })
 export class AppModule {
 
-  constructor() {}
+  constructor() { }
 
 }

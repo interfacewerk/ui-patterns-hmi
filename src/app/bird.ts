@@ -12,11 +12,11 @@ export class Bird {
     onLanding: () => any,
     landingDelay: number
   }): Promise<void> {
-    
-    let start = getCoords(this.start);
-    let end = getCoords(destination);
 
-    let promise = new Promise((resolve) => {
+    const start = getCoords(this.start);
+    const end = getCoords(destination);
+
+    const promise = new Promise<void>((resolve) => {
       // let airport = document.createElement('div');
       // airport.innerHTML = destination.outerHTML;
       // airport.classList.add('airport');
@@ -26,30 +26,34 @@ export class Bird {
       // let cloud = document.createElement('div');
       // cloud.classList.add('cloud');
 
-      let bird = document.createElement('div');
+      const bird = document.createElement('div');
       bird.classList.add('bird');
-      if (this.customClass) bird.classList.add(this.customClass);
+      if (this.customClass) { bird.classList.add(this.customClass); }
       bird.style.left = start.left + 'px';
       bird.style.top = start.top + 'px';
-      
+
       try {
-        options.onTakeOff && options.onTakeOff();        
-      } catch(e) {
+        if (options.onTakeOff) {
+          options.onTakeOff();
+        }
+      } catch (e) {
         console.error(e);
       }
-      
+
       document.body.appendChild(bird);
       // document.body.appendChild(cloud);
       // document.body.appendChild(airport);
 
-      let onend = () => {
+      const onend = () => {
         bird.removeEventListener('transitionend', onend);
         bird.remove();
         // cloud.remove();
         // airport.remove();
         try {
-          options.onLanding && options.onLanding();        
-        } catch(e) {
+          if (options.onLanding) {
+            options.onLanding();
+          }
+        } catch (e) {
           console.error(e);
         }
 
@@ -58,8 +62,8 @@ export class Bird {
       bird.addEventListener('transitionend', onend);
       setTimeout(() => {
         bird.classList.add('flying');
-        let splitPlacement = options.placement.split(' ');
-        let placement = {
+        const splitPlacement = options.placement.split(' ');
+        const placement = {
           horizontal: {
             left: splitPlacement.indexOf('left') > -1,
             center: splitPlacement.indexOf('center') > -1,
@@ -85,27 +89,26 @@ export class Bird {
         } else if (placement.vertical.bottom) {
           bird.style.top = end.top + destination.clientHeight + 'px';
         }
-      }, 200);  
+      }, 200);
     });
     return promise;
-
   }
 }
 
 function getCoords(elem): { top: number, left: number } { // crossbrowser version
-  var box = elem.getBoundingClientRect();
+  const box = elem.getBoundingClientRect();
 
-  var body = document.body;
-  var docEl = document.documentElement;
+  const body = document.body;
+  const docEl = document.documentElement;
 
-  var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-  var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+  const scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+  const scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
 
-  var clientTop = docEl.clientTop || body.clientTop || 0;
-  var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+  const clientTop = docEl.clientTop || body.clientTop || 0;
+  const clientLeft = docEl.clientLeft || body.clientLeft || 0;
 
-  var top  = box.top +  scrollTop - clientTop;
-  var left = box.left + scrollLeft - clientLeft;
+  const top  = box.top +  scrollTop - clientTop;
+  const left = box.left + scrollLeft - clientLeft;
 
   return { top: Math.round(top), left: Math.round(left) };
 }

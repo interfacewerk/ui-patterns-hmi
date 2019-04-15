@@ -1,7 +1,6 @@
-import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
-import { ExportService, ExportEvent } from '../export.service';
-import { Bird } from '../bird';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ExportEvent, ExportService } from '../export.service';
 
 @Component({
   selector: 'app-export-button',
@@ -9,6 +8,10 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./export-button.component.scss']
 })
 export class ExportButtonComponent implements OnInit, OnDestroy {
+
+  nExports: number;
+  element: HTMLElement;
+  subscription: Subscription;
 
   constructor(private exportService: ExportService, private elementRef: ElementRef) { }
 
@@ -27,8 +30,4 @@ export class ExportButtonComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
-  nExports: number;
-  element: HTMLElement;
-  subscription: Subscription;
 }

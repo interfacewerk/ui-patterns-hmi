@@ -1,7 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { AsyncSubject } from 'rxjs/AsyncSubject';
+import { Observable, AsyncSubject } from 'rxjs';
 
+const INITIAL_GROUPS: Group[] = [{
+  id: 0,
+  name: 'Family',
+  contactIds: []
+}, {
+  id: 1,
+  name: 'Friends',
+  contactIds: []
+}, {
+  id: 2,
+  name: 'Work',
+  contactIds: []
+}];
 
 @Injectable()
 export class ContactsService {
@@ -21,7 +33,7 @@ export class ContactsService {
     try {
       this.contacts = JSON.parse(localStorage.getItem('server:contacts')) || [];
       this.groups = JSON.parse(localStorage.getItem('server:groups')) || INITIAL_GROUPS;
-    } catch(e) {
+    } catch (e) {
       this.contacts = [];
       this.groups = INITIAL_GROUPS;
     }
@@ -38,7 +50,7 @@ export class ContactsService {
   }
 
   create(data: EditableContactData): Observable<Contact> {
-    let contact: Contact = {
+    const contact: Contact = {
       id: this.contacts.reduce((p, c) => Math.max(p, c.id), 0) + 1,
       name: data.name,
       phone: data.phone,
@@ -59,7 +71,9 @@ export class ContactsService {
     let found: Contact;
 
     this.contacts.some(c => {
-      if (c.id !== id) return false;
+      if (c.id !== id) {
+        return false;
+      }
       c.email = data.email;
       c.name = data.name;
       c.phone = data.phone;
@@ -82,11 +96,17 @@ export class ContactsService {
   }): Observable<Group> {
     let result: Group = null;
     this.contacts.some(c => {
-      if (c.id !== params.contactId) return false;
+      if (c.id !== params.contactId) {
+        return false;
+      }
       return this.groups.some(g => {
-        if (g.id !== params.groupId) return false;
-        let idx = g.contactIds.indexOf(params.contactId);
-        if (idx > -1) return false;
+        if (g.id !== params.groupId) {
+          return false;
+        }
+        const idx = g.contactIds.indexOf(params.contactId);
+        if (idx > -1) {
+          return false;
+        }
         g.contactIds.push(params.contactId);
         result = g;
         return true;
@@ -104,11 +124,17 @@ export class ContactsService {
   }): Observable<Group> {
     let result: Group = null;
     this.contacts.some(c => {
-      if (c.id !== params.contactId) return false;
+      if (c.id !== params.contactId) {
+        return false;
+      }
       return this.groups.some(g => {
-        if (g.id !== params.groupId) return false;
-        let idx = g.contactIds.indexOf(params.contactId);
-        if (idx === -1) return false;
+        if (g.id !== params.groupId) {
+          return false;
+        }
+        const idx = g.contactIds.indexOf(params.contactId);
+        if (idx === -1) {
+          return false;
+        }
         g.contactIds.splice(idx, 1);
         result = g;
         return true;
@@ -121,7 +147,7 @@ export class ContactsService {
   }
 
   remove(id: number): Observable<{error?: string, data?: { groups: Group[] }}> {
-    let idx = this.contacts.map(c => c.id).indexOf(id);
+    const idx = this.contacts.map(c => c.id).indexOf(id);
     if (idx === -1) {
       return delayedResponse({error: 'No such contact'}, 2000);
     }
@@ -136,7 +162,7 @@ export class ContactsService {
   }
 
   undoRemove(id: number): Observable<string> {
-    let idx = this.contacts.map(c => c.id).indexOf(id);
+    const idx = this.contacts.map(c => c.id).indexOf(id);
     if (idx === -1) {
       return delayedResponse('No such contact', 2000);
     }
@@ -145,8 +171,7 @@ export class ContactsService {
     return delayedResponse(null, 2000);
   }
 
-  private
-  save() {
+  private save() {
     localStorage.setItem('server:contacts', JSON.stringify(this.contacts));
     localStorage.setItem('server:groups', JSON.stringify(this.groups));
   }
@@ -154,7 +179,7 @@ export class ContactsService {
 }
 
 function delayedResponse<T>(value: T, delay: number): Observable<T> {
-  let subject = new AsyncSubject<T>();
+  const subject = new AsyncSubject<T>();
   setTimeout(() => {
     subject.next(value);
     subject.complete();
@@ -162,38 +187,25 @@ function delayedResponse<T>(value: T, delay: number): Observable<T> {
   return subject.asObservable();
 }
 
-export type Contact = {
-  id: number,
-  name: string,
-  email: string,
-  phone: string,
-  drilling?:string
-  isDeleted: boolean
+export interface Contact {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  drilling?: string;
+  isDeleted: boolean;
 }
 
-export type EditableContactData = {
-  name?: string,
-  email?: string,
-  phone?: string
-  drilling?:string
+export interface EditableContactData {
+  name?: string;
+  email?: string;
+  phone?: string;
+  drilling?: string;
 }
 
-export type Group = {
-  id: number,
-  name: string,
-  contactIds: number[]
+export interface Group {
+  id: number;
+  name: string;
+  contactIds: number[];
 }
 
-const INITIAL_GROUPS: Group[] = [{
-  id: 0,
-  name: 'Family',
-  contactIds: []
-}, {
-  id: 1,
-  name: 'Friends',
-  contactIds: []
-}, {
-  id: 2,
-  name: 'Work',
-  contactIds: []
-}]

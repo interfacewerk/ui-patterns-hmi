@@ -1,25 +1,11 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Renderer,
-  ElementRef,
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-  HostBinding
-} from '@angular/core';
-import { Router, ActivatedRoute, Params,  NavigationStart, NavigationEnd, Event as NavigationEvent } from '@angular/router';
-import { ContactStore, UIContact } from '../store/contacts';
-import { ContactsService, EditableContactData, Group } from '../contacts.service';
-import { ExportService } from '../export.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { ButtonState, delay } from 'ng2-stateful-button';
+import { Subscription } from 'rxjs';
+import { filter, map, share, delay as rxDelay } from 'rxjs/operators';
 import { BirdService } from '../bird.service';
-import { StatefulButtonModule, ButtonState, delay } from 'ng2-stateful-button';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/pairwise';
-import { Subscription } from 'rxjs/Subscription';
+import { ContactsService, EditableContactData, Group } from '../contacts.service';
+import { ContactStore, UIContact } from '../store/contacts';
 
 @Component({
   selector: 'app-contact',
@@ -29,26 +15,37 @@ import { Subscription } from 'rxjs/Subscription';
 export class ContactComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   contactSubscriptions: Subscription[] = [];
+  contact: UIContact;
+  model: EditableContactData;
+  isFormValid: boolean;
+  groups: Group[];
+  isContactInGroup: {
+    [groupId: string]: boolean;
+  };
+  hasModifications: boolean;
+  deleteButtonState: ButtonState = ButtonState.IDLE;
+  saveButtonState: ButtonState = ButtonState.IDLE;
+  restoreButtonState: ButtonState = ButtonState.IDLE;
+  isFormDisabled = false;
+  isFormDisplayed = true;
+  updateError: string;
 
   constructor(
-    private router: Router,
+    router: Router,
     private activatedRoute: ActivatedRoute,
     private contactStore: ContactStore,
     private contactsService: ContactsService,
-    private exportService: ExportService,
-    private birdService: BirdService,
-    private renderer: Renderer,
-    private element: ElementRef
+    private birdService: BirdService
   ) {
 
     this.subscriptions.push(router.events
-      .filter(event => event instanceof NavigationStart)
-      .subscribe((event: NavigationStart) => {
+      .pipe(filter(event => event instanceof NavigationStart))
+      .subscribe(() => {
         this.onContactOpen();
       })
     );
 
-    this.activatedRoute.params.subscribe()
+    this.activatedRoute.params.subscribe();
   }
 
   // this is kind of our ngOnInit hook here:
@@ -63,7 +60,7 @@ export class ContactComponent implements OnInit, OnDestroy {
 
     this.contactSubscriptions.push(this.contactStore.stateUpdate.subscribe(() => {
       this.activatedRoute.params.forEach(params => {
-        let id = +params['id'];
+        const id = +params['id'];
         this.contact = this.contactStore.getState().contacts.filter(c => c.id === id)[0];
         this.model = this.contact.uiState.localModifications || {
           email: this.contact.email,
@@ -94,24 +91,9 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.onContactOpen();
   }
 
-  contact: UIContact;
-  model: EditableContactData;
-  isFormValid: boolean;
-  groups: Group[];
-  isContactInGroup: {
-    [groupId: string]: boolean;
-  };
-  hasModifications: boolean;
-  deleteButtonState: ButtonState = ButtonState.IDLE;
-  saveButtonState: ButtonState = ButtonState.IDLE;
-  restoreButtonState: ButtonState = ButtonState.IDLE;
-  isFormDisabled: boolean = false;
-  isFormDisplayed: boolean = true;
-  updateError: string;
-
   toggleContactInGroup(group: Group) {
     if (this.isContactInGroup[group.id]) {
-      let target = <HTMLElement>document.querySelector(`[group-checkbox-id="${group.id}"]`);
+      const target = <HTMLElement>document.querySelector(`[group-checkbox-id="${group.id}"]`);
 
       this.contactsService.addContactToGroup({
         contactId: this.contact.id,
@@ -141,56 +123,60 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   save() {
     this.saveButtonState = ButtonState.DOING;
-    let contactId = this.contact.id;
+    const contactId = this.contact.id;
     this.contactStore.startUpdateContactData(contactId, this.model);
     delay(500).then(() => {
-      let request = this.contactsService.update(contactId, this.model).share();
+      const request = this.contactsService.update(contactId, this.model).pipe(share());
 
       request
-        .filter(c => !!c.error)
+        .pipe(filter(c => !!c.error))
         .subscribe(c => this.contactStore.finalizeUpdateContactDataWithError(contactId, c.error));
 
       request
-        .filter(c => !c.error)
+        .pipe(filter(c => !c.error))
         .subscribe(c => this.contactStore.finalizeUpdateContactData(contactId, c.contact));
 
       this.contactSubscriptions.push(
         request
-          .filter(c => !!c.error)
-          .map(c => this.saveButtonState = ButtonState.FAILURE)
-          .delay(2000)
-          .subscribe(c => this.saveButtonState = ButtonState.IDLE),
+          .pipe(
+            filter(c => !!c.error),
+            map(() => this.saveButtonState = ButtonState.FAILURE),
+            rxDelay(2000)
+          )
+          .subscribe(() => this.saveButtonState = ButtonState.IDLE),
         request
-          .filter(c => !c.error)
-          .map(c => this.saveButtonState = ButtonState.SUCCESS)
-          .delay(2000)
-          .subscribe(c => this.saveButtonState = ButtonState.IDLE)
+          .pipe(
+            filter(c => !c.error),
+            map(() => this.saveButtonState = ButtonState.SUCCESS),
+            rxDelay(2000)
+          )
+          .subscribe(() => this.saveButtonState = ButtonState.IDLE)
       );
     });
   }
 
   delete() {
     this.deleteButtonState = ButtonState.DOING;
-    let contactId = this.contact.id;
+    const contactId = this.contact.id;
     this.contactStore.startContactDeletion(contactId);
     delay(500).then(() => {
-      let request = this.contactsService.remove(contactId).share();
+      const request = this.contactsService.remove(contactId).pipe(share());
 
       this.contactSubscriptions.push(
-        request.subscribe(c => this.deleteButtonState = ButtonState.IDLE)
+        request.subscribe(() => this.deleteButtonState = ButtonState.IDLE)
       );
 
       request
-        .subscribe(r => this.contactStore.finalizeContactDeletion(contactId, r.data.groups))
+        .subscribe((r: any) => this.contactStore.finalizeContactDeletion(contactId, r.data.groups));
     });
   }
 
   restore() {
     this.restoreButtonState = ButtonState.DOING;
-    let contactId = this.contact.id;
+    const contactId = this.contact.id;
     this.contactStore.startContactUndoDeletion(contactId);
     delay(500).then(() => {
-      let request = this.contactsService.undoRemove(contactId);
+      const request = this.contactsService.undoRemove(contactId);
 
       request
         .subscribe(() => this.contactStore.finalizeContactUndoDeletion(contactId));

@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Group, Contact, EditableContactData } from '../contacts.service';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class ContactStore {
-  public
   stateUpdate: Observable<void>;
 
+  private state: AppState;
+  private _stateUpdate: BehaviorSubject<void>;
+
   setGroupData(id: number, data: Group) {
-    this.nextState(state => findGroupByIdAndDo(id, (g, idx) => {
+    this.nextState(state => findGroupByIdAndDo(id, (_, idx) => {
       state.groups[idx] = data;
     }, state));
   }
@@ -60,7 +61,7 @@ export class ContactStore {
     this.nextState(state => {
       state.groups = groups;
       state.contacts = contacts.map(c => {
-        let result: UIContact = {
+        const result: UIContact = {
           id: c.id,
           email: c.email,
           isDeleted: c.isDeleted,
@@ -81,20 +82,20 @@ export class ContactStore {
   }
 
   startContactUndoDeletion(id: number) {
-    this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
+    this.nextState(state => findContactByIdAndDo(id, (c) => {
       c.uiState.isBeingUnremoved = true;
     }, state));
   }
 
   finalizeContactUndoDeletion(id: number) {
-    this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
+    this.nextState(state => findContactByIdAndDo(id, (c) => {
       c.uiState.isBeingUnremoved = false;
       c.isDeleted = false;
     }, state));
   }
 
   startContactDeletion(id: number) {
-    this.nextState(state => findContactByIdAndDo(id, (c, idx) => {
+    this.nextState(state => findContactByIdAndDo(id, (c) => {
       c.uiState.isBeingRemoved = true;
       c.uiState.updateError = null;
     }, state));
@@ -102,7 +103,7 @@ export class ContactStore {
 
   finalizeContactDeletion(id: number, groups: Group[]) {
     this.nextState(state => {
-      findContactByIdAndDo(id, (c, idx) => {
+      findContactByIdAndDo(id, (c) => {
         c.isDeleted = true;
         c.uiState.isBeingRemoved = false;
       }, state);
@@ -111,9 +112,9 @@ export class ContactStore {
   }
 
   startContactCreation(contact: EditableContactData): number {
-    let tmpId = - Math.floor(Math.random() * 10000000);
+    const tmpId = - Math.floor(Math.random() * 10000000);
     this.nextState(state => {
-      let uiContact: UIContact = {
+      const uiContact: UIContact = {
         id: tmpId,
         email: contact.email,
         name: contact.name,
@@ -135,7 +136,7 @@ export class ContactStore {
 
   finalizeContactCreation(tmpId: number, contact: Contact) {
     this.nextState(state =>
-      findContactByIdAndDo(tmpId, (c, idx) => {
+      findContactByIdAndDo(tmpId, (_, idx) => {
         state.contacts[idx] = {
           id: contact.id,
           email: contact.email,
@@ -150,7 +151,7 @@ export class ContactStore {
             isBeingUnremoved: false,
             updateError: null
           }
-        }
+        };
       }, state)
     );
   }
@@ -184,16 +185,13 @@ export class ContactStore {
     this.stateUpdate = this._stateUpdate.asObservable();
   }
 
-  private
-  state: AppState;
-  _stateUpdate: BehaviorSubject<void>;
   nextState(stateModifier: (s: AppState) => void) {
-    let newState: AppState = JSON.parse(JSON.stringify(this.state));
+    const newState: AppState = JSON.parse(JSON.stringify(this.state));
 
     try {
       stateModifier(newState);
       this.state = newState;
-    } catch(e) {
+    } catch (e) {
       console.error(e);
     }
 
@@ -202,11 +200,11 @@ export class ContactStore {
 
 }
 
-export type AppState = {
-  isInitializing: boolean,
-  contacts: Array<UIContact>,
-  groups: Array<Group>,
-  selectedCreateContactDelay: number,
+export interface AppState {
+  isInitializing: boolean;
+  contacts: Array<UIContact>;
+  groups: Array<Group>;
+  selectedCreateContactDelay: number;
   createContactDelays: Array<{text: string, value: number}>;
 }
 
@@ -219,19 +217,19 @@ export type UIContact = Contact & {
     localModifications?: EditableContactData
     updateError: string
   }
-}
+};
 
-function findContactByIdAndDo(id: number, cb:(c: UIContact, idx: number) => any,  state: AppState) {
+function findContactByIdAndDo(id: number, cb: (c: UIContact, idx: number) => any,  state: AppState) {
   state.contacts.some((c, idx) => {
-    if (c.id !== id) return false;
+    if (c.id !== id) { return false; }
     cb(c, idx);
     return true;
   });
 }
 
-function findGroupByIdAndDo(id: number, cb:(c: Group, idx: number) => any,  state: AppState) {
+function findGroupByIdAndDo(id: number, cb: (c: Group, idx: number) => any,  state: AppState) {
   state.groups.some((c, idx) => {
-    if (c.id !== id) return false;
+    if (c.id !== id) { return false; }
     cb(c, idx);
     return true;
   });

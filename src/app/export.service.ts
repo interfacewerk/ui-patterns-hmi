@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { EditableContactData } from './contacts.service';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+
+export enum ExportEvent {
+  ADD
+}
 
 @Injectable()
 export class ExportService {
   exportEvent: Observable<ExportEvent>;
+  exportedData: EditableContactData[];
+
+  private exportEventSubject: Subject<ExportEvent>;
 
   constructor() {
     this.exportedData = [];
@@ -18,11 +24,4 @@ export class ExportService {
     this.exportEventSubject.next(ExportEvent.ADD);
   }
 
-  private
-  exportedData: EditableContactData[];
-  exportEventSubject: Subject<ExportEvent>;
-}
-
-export enum ExportEvent {
-  ADD
 }

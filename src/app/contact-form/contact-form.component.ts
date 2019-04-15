@@ -1,22 +1,7 @@
-import {
-  OnDestroy,
-  Component,
-  OnInit,
-  AfterViewInit,
-  Input,
-  Directive,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-  Renderer,
-  HostBinding,
-  HostListener
-} from '@angular/core';
+import { AfterViewInit, Component, Directive, EventEmitter, HostBinding, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { EditableContactData } from '../contacts.service';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -25,7 +10,10 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./contact-form.component.scss']
 })
 export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  private valueChanges: Subscription;
+  showNumpad = false;
+  watchContactChanges: Subscription;
+  showGraph: boolean;
   @Input() model: EditableContactData;
   @HostBinding('class.disabled') @Input() formDisabled: boolean;
 
@@ -34,14 +22,9 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() onSubmit = new EventEmitter<EditableContactData>();
   @ViewChild(NgForm) contactForm: NgForm;
 
-  constructor(private renderer: Renderer, private element: ElementRef) {
 
-
-  }
-  private showNumpad:boolean = false;
-
-  updateDataFromNumpad($event){
-    this.model.phone=$event;
+  updateDataFromNumpad($event) {
+    this.model.phone = $event;
     this.showNumpad = false;
   }
 
@@ -52,7 +35,6 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  watchContactChanges: Subscription;
   ngAfterViewInit() {
     this.valueChanges = this.contactForm.valueChanges.subscribe(() => {
       this.onValid.emit(this.contactForm.valid);
@@ -90,8 +72,8 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.drawYAxis();
     }
 
-    Graph.prototype.drawXAxis = function() {
-      var context = this.context;
+    Graph.prototype.drawXAxis = function () {
+      const context = this.context;
       context.save();
       context.beginPath();
       context.moveTo(0, this.centerY);
@@ -101,8 +83,8 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       context.stroke();
 
       // draw tick marks
-      var xPosIncrement = this.unitsPerTick * this.unitX;
-      var xPos, unit;
+      const xPosIncrement = this.unitsPerTick * this.unitX;
+      let xPos, unit;
       context.font = this.font;
       context.textAlign = 'center';
       context.textBaseline = 'top';
@@ -110,7 +92,7 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       // draw left tick marks
       xPos = this.centerX - xPosIncrement;
       unit = -1 * this.unitsPerTick;
-      while(xPos > 0) {
+      while (xPos > 0) {
         context.moveTo(xPos, this.centerY - this.tickSize / 2);
         context.lineTo(xPos, this.centerY + this.tickSize / 2);
         context.stroke();
@@ -122,7 +104,7 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       // draw right tick marks
       xPos = this.centerX + xPosIncrement;
       unit = this.unitsPerTick;
-      while(xPos < this.canvas.width) {
+      while (xPos < this.canvas.width) {
         context.moveTo(xPos, this.centerY - this.tickSize / 2);
         context.lineTo(xPos, this.centerY + this.tickSize / 2);
         context.stroke();
@@ -133,8 +115,8 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       context.restore();
     };
 
-    Graph.prototype.drawYAxis = function() {
-      var context = this.context;
+    Graph.prototype.drawYAxis = function () {
+      const context = this.context;
       context.save();
       context.beginPath();
       context.moveTo(this.centerX, 0);
@@ -144,8 +126,8 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       context.stroke();
 
       // draw tick marks
-      var yPosIncrement = this.unitsPerTick * this.unitY;
-      var yPos, unit;
+      const yPosIncrement = this.unitsPerTick * this.unitY;
+      let yPos, unit;
       context.font = this.font;
       context.textAlign = 'right';
       context.textBaseline = 'middle';
@@ -153,7 +135,7 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       // draw top tick marks
       yPos = this.centerY - yPosIncrement;
       unit = this.unitsPerTick;
-      while(yPos > 0) {
+      while (yPos > 0) {
         context.moveTo(this.centerX - this.tickSize / 2, yPos);
         context.lineTo(this.centerX + this.tickSize / 2, yPos);
         context.stroke();
@@ -165,7 +147,7 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       // draw bottom tick marks
       yPos = this.centerY + yPosIncrement;
       unit = -1 * this.unitsPerTick;
-      while(yPos < this.canvas.height) {
+      while (yPos < this.canvas.height) {
         context.moveTo(this.centerX - this.tickSize / 2, yPos);
         context.lineTo(this.centerX + this.tickSize / 2, yPos);
         context.stroke();
@@ -176,8 +158,8 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       context.restore();
     };
 
-    Graph.prototype.drawEquation = function(equation, color, thickness) {
-      var context = this.context;
+    Graph.prototype.drawEquation = function (equation, color, thickness) {
+      const context = this.context;
       context.save();
       context.save();
       this.transformContext();
@@ -185,7 +167,7 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       context.beginPath();
       context.moveTo(this.minX, equation(this.minX));
 
-      for(var x = this.minX + this.iteration; x <= this.maxX; x += this.iteration) {
+      for (let x = this.minX + this.iteration; x <= this.maxX; x += this.iteration) {
         context.lineTo(x, equation(x));
       }
 
@@ -197,8 +179,8 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       context.restore();
     };
 
-    Graph.prototype.transformContext = function() {
-      var context = this.context;
+    Graph.prototype.transformContext = function () {
+      const context = this.context;
 
       // move context to center of canvas
       this.context.translate(this.centerX, this.centerY);
@@ -210,7 +192,7 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
        */
       context.scale(this.scaleX, -this.scaleY);
     };
-    var myGraph = new Graph({
+    const myGraph = new Graph({
       canvasId: 'myCanvas',
       minX: -2,
       minY: -2,
@@ -219,11 +201,11 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
       unitsPerTick: 1
     });
 
-    myGraph.drawEquation(function(x) {
-      return 1 * Math.sqrt(1-x*x);
+    myGraph.drawEquation(function (x) {
+      return 1 * Math.sqrt(1 - x * x);
     }, 'blue', 1);
-    myGraph.drawEquation(function(x) {
-      return -1 * Math.sqrt(1-x*x);
+    myGraph.drawEquation(function (x) {
+      return -1 * Math.sqrt(1 - x * x);
     }, 'blue', 1);
 
     this.checkForGraph();
@@ -242,10 +224,10 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.checkForGraph();
   }
 
-  checkForGraph(){
-    if(this.model.email.indexOf('G17 G20 G90 G94 G54')!=-1){
+  checkForGraph() {
+    if (this.model.email.indexOf('G17 G20 G90 G94 G54') != -1) {
       this.showGraph = true;
-    }else{
+    } else {
       this.showGraph = false;
     }
   }
@@ -253,18 +235,14 @@ export class ContactFormComponent implements OnInit, AfterViewInit, OnDestroy {
   $onSubmit() {
     this.onSubmit.emit(this.model);
   }
-
-  showGraph: boolean;
-  private
-  valueChanges: Subscription;
 }
 
 @Directive({
   selector: 'app-contact-form-header'
 })
-export class ContactFormHeader {}
+export class ContactFormHeaderDirective { }
 
 @Directive({
   selector: 'app-contact-form-footer'
 })
-export class ContactFormFooter {}
+export class ContactFormFooterDirective { }

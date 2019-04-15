@@ -1,13 +1,11 @@
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class BirdService {
 
-  constructor() {
-    this.airports = {};
-  }
+  private airports: {
+    [airportId: string]: (source: HTMLElement) => Promise<void>
+  } = {};
 
   deliverTo(airportId: string, source: HTMLElement): Promise<void> {
     if (this.airports[airportId]) {
@@ -22,11 +20,6 @@ export class BirdService {
     return () => {
       this.airports[airpordId] = null;
     };
-  };
-
-  private newDeliverySubject: Subject<{airportId: string, source: HTMLElement}>;
-
-  private airports: {
-    [airportId: string]: (source: HTMLElement) => Promise<void>
   }
+
 }
